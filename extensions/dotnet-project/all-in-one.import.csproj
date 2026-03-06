@@ -9,6 +9,11 @@
     RazorCompilerAnalyzerPath
   -->
 
+  <!-- Import the namespace and output type settings -->
+  <Import Project="parts\namespace-and-output-type.import.csproj" />
+
+
+
   <PropertyGroup>
     <!-- Defaults for a reusable helper setup -->
     <HelperHostMode Condition="'$(HelperHostMode)' == ''">Auto</HelperHostMode>
@@ -154,5 +159,8 @@
     <PackageReference Include="Microsoft.AspNetCore.Mvc.Razor" Version="2.2.0" PrivateAssets="all" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.RazorPages" Version="2.2.0" PrivateAssets="all" />
   </ItemGroup>
+
+  <!-- Polymorphism - ignore duplicate files with the same classes as it confuses IntelliSense - see https://go.2sxc.org/vscode -->
+  <Import Project="parts\ignore-edition-live.import.csproj" />
 
 </Project>
