@@ -1,11 +1,15 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
-<SexyContent FileVersion="07.00.00" MinimumRequiredVersion="07.04.02" ModuleVersion="21.04.00" ExportDate="2026-03-06T16:59:46.4829448+01:00">
+<SexyContent FileVersion="07.00.00" MinimumRequiredVersion="07.04.02" ModuleVersion="21.05.00" ExportDate="2026-03-06T18:11:50.8049605+01:00">
   <Header>
     <App Guid="3af41715-16a0-4e68-936d-9ee61fd57b42" />
     <Language Default="en-us" />
     <Dimensions>
-      <Dimension DimensionID="228" Name="English (United States)" SystemKey="" ExternalKey="en-US" Active="true" />
-      <Dimension DimensionID="229" Name="German (Germany)" SystemKey="" ExternalKey="de-DE" Active="true" />
+      <Dimension DimensionID="1018" Name="German (Germany)" SystemKey="" ExternalKey="de-DE" Active="true" />
+      <Dimension DimensionID="1019" Name="English (United States)" SystemKey="" ExternalKey="en-US" Active="true" />
+      <Dimension DimensionID="1020" Name="Spanish (Spain, International Sort)" SystemKey="" ExternalKey="es-ES" Active="true" />
+      <Dimension DimensionID="1021" Name="French (France)" SystemKey="" ExternalKey="fr-FR" Active="true" />
+      <Dimension DimensionID="1022" Name="Italian (Italy)" SystemKey="" ExternalKey="it-IT" Active="true" />
+      <Dimension DimensionID="1023" Name="Dutch (Netherlands)" SystemKey="" ExternalKey="nl-NL" Active="true" />
     </Dimensions>
   </Header>
   <AttributeSets>
@@ -15,110 +19,135 @@
     <AttributeSet StaticName="App-Settings" Name="App-Settings" Scope="System.App" AlwaysShareConfiguration="false">
       <Attributes />
     </AttributeSet>
+    <AttributeSet StaticName="4ed8d405-f7dd-4e4c-9108-ca28967591f0" Name="BlogPost" Scope="Default" AlwaysShareConfiguration="false">
+      <Attributes>
+        <Attribute StaticName="Title" Type="String" IsTitle="true">
+          <Entity TargetType="2" AssignmentObjectType="EAV Field Properties" AttributeSetStaticName="@All" AttributeSetName="@All" EntityGUID="ac75cf1c-c71b-41f4-a7ba-5e5a3a1ec1f1" Json="True" KeyNumber="80736">
+            <Value Key="InputType" Value="string-default" Type="String" />
+            <Value Key="Name" Value="Title" Type="String" />
+            <Value Key="VisibleInEditUI" Value="True" Type="Boolean" />
+          </Entity>
+        </Attribute>
+        <Attribute StaticName="Content" Type="String" IsTitle="false">
+          <Entity TargetType="2" AssignmentObjectType="EAV Field Properties" AttributeSetStaticName="@All" AttributeSetName="@All" EntityGUID="d12bbd34-f635-4d2f-aaac-45820eb7994c" Json="True" KeyNumber="80737">
+            <Value Key="InputType" Value="string-wysiwyg" Type="String" />
+            <Value Key="Name" Value="Content" Type="String" />
+            <Value Key="VisibleInEditUI" Value="True" Type="Boolean" />
+          </Entity>
+        </Attribute>
+        <Attribute StaticName="Date" Type="DateTime" IsTitle="false">
+          <Entity TargetType="2" AssignmentObjectType="EAV Field Properties" AttributeSetStaticName="@All" AttributeSetName="@All" EntityGUID="6ac546cc-eb1f-46a2-8466-a708ccd3a1a0" Json="True" KeyNumber="80738">
+            <Value Key="InputType" Value="datetime-default" Type="String" />
+            <Value Key="Name" Value="Date" Type="String" />
+            <Value Key="VisibleInEditUI" Value="True" Type="Boolean" />
+          </Entity>
+        </Attribute>
+      </Attributes>
+    </AttributeSet>
   </AttributeSets>
   <Entities>
-    <Entity TargetType="3" AssignmentObjectType="App" AttributeSetStaticName="2SexyContent-App" AttributeSetName="2SexyContent-App" EntityGUID="99a84f36-e791-486d-a821-c424df4c77be" Json="True" KeyNumber="368">
+    <Entity TargetType="3" AssignmentObjectType="App" AttributeSetStaticName="2SexyContent-App" AttributeSetName="2SexyContent-App" EntityGUID="99a84f36-e791-486d-a821-c424df4c77be" Json="True" KeyNumber="6395">
       <Value Key="AllowRazorTemplates" Value="True" Type="Boolean">
-        <Dimension DimensionID="228" ReadOnly="false" />
+        <Dimension DimensionID="1019" ReadOnly="false" />
       </Value>
       <Value Key="AllowTokenTemplates" Value="False" Type="Boolean">
-        <Dimension DimensionID="228" ReadOnly="false" />
+        <Dimension DimensionID="1019" ReadOnly="false" />
       </Value>
       <Value Key="DebugLog" Value="Caller: Create; Line: 56; File: C:\Projects\2sxc\eav-server\ToSic.Eav.Apps\Eav.Apps.Internal\Work\AppCreate\AppCreator.cs&#xA;Caller: InitializeApp; Line: 62; File: C:\Projects\2sxc\eav-server\ToSic.Eav.Apps\Eav.Apps.Internal\Work\AppCreate\AppInitializer.cs&#xA;Message: App: 325; Number: 0&#xA;Caller: CheckIfAllPartsExist; Line: 54; File: C:\Projects\2sxc\eav-server\ToSic.Eav.Apps\Eav.Apps.Internal\Work\AppCreate\AppInitializedChecker.cs&#xA;Message: App: 325; Number: 0&#xA;Message: Config: False, Resources: False, Settings: False; AllOk: False; Number: 0&#xA;Message: App Entity Count: 0; Number: 0&#xA;Message: App ContentType Count: 119; Number: 0&#xA;Message: App Metadata Count: 0; Number: 0&#xA;Message: Has Type App Config: ToSic.Eav.Data.ContentTypeWrapper; Number: 0&#xA;Message: Has Type App Resources: ; Number: 0&#xA;Message: Has Type App Settings: ; Number: 0&#xA;Message: Some parts missing: appConfig: ; appResources: : appSettings; ; Number: 0" Type="String">
-        <Dimension DimensionID="228" ReadOnly="false" />
+        <Dimension DimensionID="1019" ReadOnly="false" />
       </Value>
       <Value Key="Description" Value="" Type="String">
-        <Dimension DimensionID="228" ReadOnly="false" />
+        <Dimension DimensionID="1019" ReadOnly="false" />
       </Value>
       <Value Key="DisplayName" Value="App Ext Dot-Net Project (csproj)" Type="String">
-        <Dimension DimensionID="228" ReadOnly="false" />
+        <Dimension DimensionID="1019" ReadOnly="false" />
       </Value>
       <Value Key="Folder" Value="app-extension-dotnet-project" Type="String">
-        <Dimension DimensionID="228" ReadOnly="false" />
+        <Dimension DimensionID="1019" ReadOnly="false" />
       </Value>
       <Value Key="Hidden" Value="False" Type="Boolean">
-        <Dimension DimensionID="228" ReadOnly="false" />
+        <Dimension DimensionID="1019" ReadOnly="false" />
       </Value>
       <Value Key="OriginalId" Value="" Type="String">
-        <Dimension DimensionID="228" ReadOnly="false" />
+        <Dimension DimensionID="1019" ReadOnly="false" />
       </Value>
       <Value Key="RequiredDnnVersion" Value="09.11.02" Type="String">
-        <Dimension DimensionID="228" ReadOnly="false" />
+        <Dimension DimensionID="1019" ReadOnly="false" />
       </Value>
       <Value Key="RequiredOqtaneVersion" Value="10.00.00" Type="String">
-        <Dimension DimensionID="228" ReadOnly="false" />
+        <Dimension DimensionID="1019" ReadOnly="false" />
       </Value>
       <Value Key="RequiredVersion" Value="21.00.00" Type="String">
-        <Dimension DimensionID="228" ReadOnly="false" />
+        <Dimension DimensionID="1019" ReadOnly="false" />
       </Value>
       <Value Key="SupportsAjaxReload" Value="False" Type="Boolean">
-        <Dimension DimensionID="228" ReadOnly="false" />
+        <Dimension DimensionID="1019" ReadOnly="false" />
       </Value>
       <Value Key="Version" Value="00.21.00" Type="String">
-        <Dimension DimensionID="228" ReadOnly="false" />
+        <Dimension DimensionID="1019" ReadOnly="false" />
       </Value>
     </Entity>
-    <Entity TargetType="3" AssignmentObjectType="App" AttributeSetStaticName="App-Settings" AttributeSetName="App-Settings" EntityGUID="8d079008-cfbb-4dba-8eab-5ff9888dd4ec" KeyNumber="368" />
-    <Entity TargetType="3" AssignmentObjectType="App" AttributeSetStaticName="App-Resources" AttributeSetName="App-Resources" EntityGUID="b40197cb-f1ae-47d8-92ac-bc52ed1b53ab" KeyNumber="368" />
+    <Entity TargetType="3" AssignmentObjectType="App" AttributeSetStaticName="App-Settings" AttributeSetName="App-Settings" EntityGUID="8d079008-cfbb-4dba-8eab-5ff9888dd4ec" KeyNumber="6395" />
+    <Entity TargetType="3" AssignmentObjectType="App" AttributeSetStaticName="App-Resources" AttributeSetName="App-Resources" EntityGUID="b40197cb-f1ae-47d8-92ac-bc52ed1b53ab" KeyNumber="6395" />
     <Entity TargetType="1" AssignmentObjectType="Default" AttributeSetStaticName="2SexyContent-Template" AttributeSetName="2SexyContent-Template" EntityGUID="032e360f-d7b1-4ce1-beb8-f24bf6257a0f" Json="True">
       <Value Key="ContentTypeStaticName" Value="" Type="String">
-        <Dimension DimensionID="228" ReadOnly="false" />
+        <Dimension DimensionID="1019" ReadOnly="false" />
       </Value>
       <Value Key="Icon" Value="" Type="Hyperlink">
-        <Dimension DimensionID="228" ReadOnly="false" />
+        <Dimension DimensionID="1019" ReadOnly="false" />
       </Value>
       <Value Key="Identifier" Value="" Type="String">
-        <Dimension DimensionID="228" ReadOnly="false" />
+        <Dimension DimensionID="1019" ReadOnly="false" />
       </Value>
       <Value Key="IsHidden" Value="False" Type="Boolean">
-        <Dimension DimensionID="228" ReadOnly="false" />
+        <Dimension DimensionID="1019" ReadOnly="false" />
       </Value>
       <Value Key="ListContentTypeStaticName" Value="" Type="String">
-        <Dimension DimensionID="228" ReadOnly="false" />
+        <Dimension DimensionID="1019" ReadOnly="false" />
       </Value>
       <Value Key="ListPresentationTypeStaticName" Value="" Type="String">
-        <Dimension DimensionID="228" ReadOnly="false" />
+        <Dimension DimensionID="1019" ReadOnly="false" />
       </Value>
       <Value Key="Location" Value="Site" Type="String">
-        <Dimension DimensionID="228" ReadOnly="false" />
+        <Dimension DimensionID="1019" ReadOnly="false" />
       </Value>
       <Value Key="Name" Value="Default View" Type="String">
-        <Dimension DimensionID="228" ReadOnly="false" />
+        <Dimension DimensionID="1019" ReadOnly="false" />
       </Value>
       <Value Key="Path" Value="Default.cshtml" Type="String">
-        <Dimension DimensionID="228" ReadOnly="false" />
+        <Dimension DimensionID="1019" ReadOnly="false" />
       </Value>
       <Value Key="PresentationTypeStaticName" Value="" Type="String">
-        <Dimension DimensionID="228" ReadOnly="false" />
+        <Dimension DimensionID="1019" ReadOnly="false" />
       </Value>
       <Value Key="PublishData" Value="False" Type="Boolean">
-        <Dimension DimensionID="228" ReadOnly="false" />
+        <Dimension DimensionID="1019" ReadOnly="false" />
       </Value>
       <Value Key="SearchIndexingDisabled" Value="False" Type="Boolean">
-        <Dimension DimensionID="228" ReadOnly="false" />
+        <Dimension DimensionID="1019" ReadOnly="false" />
       </Value>
       <Value Key="SearchIndexingStreams" Value="" Type="String">
-        <Dimension DimensionID="228" ReadOnly="false" />
+        <Dimension DimensionID="1019" ReadOnly="false" />
       </Value>
       <Value Key="StreamsToPublish" Value="" Type="String">
-        <Dimension DimensionID="228" ReadOnly="false" />
+        <Dimension DimensionID="1019" ReadOnly="false" />
       </Value>
       <Value Key="Type" Value="C# Razor" Type="String">
-        <Dimension DimensionID="228" ReadOnly="false" />
+        <Dimension DimensionID="1019" ReadOnly="false" />
       </Value>
       <Value Key="UseForList" Value="False" Type="Boolean">
-        <Dimension DimensionID="228" ReadOnly="false" />
+        <Dimension DimensionID="1019" ReadOnly="false" />
       </Value>
       <Value Key="ViewController" Value="" Type="String">
-        <Dimension DimensionID="228" ReadOnly="false" />
+        <Dimension DimensionID="1019" ReadOnly="false" />
       </Value>
       <Value Key="ViewNameInUrl" Value="" Type="String">
-        <Dimension DimensionID="228" ReadOnly="false" />
+        <Dimension DimensionID="1019" ReadOnly="false" />
       </Value>
     </Entity>
   </Entities>
   <PortalFiles />
   <PortalFolders>
-    <Folder Id="14695" RelativePath="adam/app-extension-dotnet-project/" />
+    <Folder Id="37202" RelativePath="adam/app-extension-dotnet-project/" />
   </PortalFolders>
 </SexyContent>

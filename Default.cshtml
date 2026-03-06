@@ -1,6 +1,10 @@
-@inherits Custom.Hybrid.RazorTyped
-@* FYI: this inherits from RazorTyped to use the latest APIs. Learn more on https://go.2sxc.org/cs-typed *@
-
+@inherits AppCode.Razor.AppRazor
+@using ToSic.Razor.Blade
+@using AppCode.Data
+@{
+  // Get current post to show from the View-Query + some Helpers
+  var blogPost = As<BlogPost>(MyData);
+}
 <div @Kit.Toolbar.Default(MyItem)>
 
   <h1>App to develop the app.csproj</h1>
@@ -12,6 +16,7 @@
   <hr>
 
   <p>
-    
+
   </p>
 </div>
+@* @blogPost.Test *@
