@@ -6,9 +6,6 @@
   <!-- Import everything so it just magically works. For fine-grained control, import the individual files instead of the all-in-one. -->
   <Import Project="extensions\dotnet-project\all-in-one.import.csproj" />
 
-  <!-- Polymorphism - ignore duplicate files with the same classes as it confuses IntelliSense - see https://go.2sxc.org/vscode -->
-  <Import Project="extensions\dotnet-project\ignore-edition-live.import.csproj" />
-
   <ItemGroup>
     <Content Remove="package.json" />
     <Content Remove="package-lock.json" />
