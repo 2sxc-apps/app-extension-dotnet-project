@@ -6,24 +6,15 @@
     <OutputType>Library</OutputType>
   </PropertyGroup>
 
-  <Import Project="extensions\dotnet-project\main.targets" />
+  <!-- Import everything so it just magically works. For fine-grained control, import the individual files instead of the all-in-one. -->
+  <Import Project="extensions\dotnet-project\all-in-one.import.csproj" />
 
-
-
-
+  <!-- Polymorphism - ignore duplicate files with the same classes as it confuses IntelliSense - see https://go.2sxc.org/vscode -->
+  <Import Project="extensions\dotnet-project\ignore-edition-live.import.csproj" />
 
   <ItemGroup>
     <Content Remove="package.json" />
     <Content Remove="package-lock.json" />
-  </ItemGroup>
-
-  <!-- Polymorphism - if have files with the same classes confuse IntelliSense - see https://go.2sxc.org/vscode -->
-  <!-- Example: exclude /live as we're always working on /staging -->
-  <ItemGroup>
-    <None Remove="live\**" />
-    <Content Remove="live\**" />
-    <Compile Remove="live\**" />
-    <EmbeddedResource Remove="live\**" />
   </ItemGroup>
 
 </Project>
