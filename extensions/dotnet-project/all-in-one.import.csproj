@@ -10,7 +10,7 @@
   -->
 
   <!-- Import the namespace and output type settings -->
-  <Import Project="parts\namespace-and-output-type.import.csproj" />
+  <Import Project="parts\namespace-and-output-type.import.props" />
 
 
 
@@ -161,6 +161,6 @@
   </ItemGroup>
 
   <!-- Polymorphism - ignore duplicate files with the same classes as it confuses IntelliSense - see https://go.2sxc.org/vscode -->
-  <Import Project="parts\ignore-edition-live.import.csproj" />
+  <Import Project="parts\ignore-edition-live.import.props" />
 
 </Project>
