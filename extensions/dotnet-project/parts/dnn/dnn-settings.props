@@ -1,0 +1,8 @@
+<Project>
+  <!-- DNN-specific framework, language, and bin selection -->
+  <PropertyGroup>
+    <TargetFramework>$(DnnTargetFramework)</TargetFramework>
+    <LangVersion>$(DnnLangVersion)</LangVersion>
+    <PathBin>$(DnnBinPath)</PathBin>
+  </PropertyGroup>
+</Project>

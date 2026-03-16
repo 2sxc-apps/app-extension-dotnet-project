@@ -1,0 +1,13 @@
+<Project>
+  <!-- DNN-only Razor design-time helpers required for legacy Razor IntelliSense -->
+  <ItemGroup>
+    <Reference Include="Microsoft.AspNetCore.Razor.Utilities.Shared" Condition="'$(RazorUtilitiesSharedPath)' != ''">
+      <HintPath>$(RazorUtilitiesSharedPath)</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="Microsoft.Extensions.ObjectPool" Condition="'$(RazorObjectPoolPath)' != ''">
+      <HintPath>$(RazorObjectPoolPath)</HintPath>
+      <Private>false</Private>
+    </Reference>
+  </ItemGroup>
+</Project>

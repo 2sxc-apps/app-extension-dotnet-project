@@ -1,0 +1,6 @@
+<Project>
+  <!-- Aggregate all Razor design-time pieces needed for VS Code IntelliSense -->
+  <Import Project="design-time\razor-tooling.props" />
+  <Import Project="design-time\design-time-core.props" />
+  <Import Project="design-time\dnn-design-time.props" />
+</Project>

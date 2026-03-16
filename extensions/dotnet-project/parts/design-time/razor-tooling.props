@@ -1,0 +1,17 @@
+<Project>
+  <!-- Resolve Razor analyzer and helper assemblies from the installed SDK -->
+  <PropertyGroup>
+    <RazorSdkPath>$(MSBuildSDKsPath)\Microsoft.NET.Sdk.Razor</RazorSdkPath>
+    <RazorSourceGeneratorsPath>$(RazorSdkPath)\source-generators</RazorSourceGeneratorsPath>
+    <RazorToolsPath>$(RazorSdkPath)\tools</RazorToolsPath>
+
+    <RazorCompilerAnalyzerPath Condition="'$(RazorCompilerAnalyzerPath)' == '' And Exists('$(RazorSourceGeneratorsPath)\Microsoft.CodeAnalysis.Razor.Compiler.dll')">$(RazorSourceGeneratorsPath)\Microsoft.CodeAnalysis.Razor.Compiler.dll</RazorCompilerAnalyzerPath>
+    <RazorCompilerAnalyzerPath Condition="'$(RazorCompilerAnalyzerPath)' == '' And Exists('$(RazorToolsPath)\Microsoft.CodeAnalysis.Razor.Compiler.dll')">$(RazorToolsPath)\Microsoft.CodeAnalysis.Razor.Compiler.dll</RazorCompilerAnalyzerPath>
+    <RazorCompilerAnalyzerPath Condition="'$(RazorCompilerAnalyzerPath)' == ''">Microsoft.CodeAnalysis.Razor.Compiler.dll</RazorCompilerAnalyzerPath>
+
+    <RazorUtilitiesSharedPath Condition="Exists('$(RazorSourceGeneratorsPath)\Microsoft.AspNetCore.Razor.Utilities.Shared.dll')">$(RazorSourceGeneratorsPath)\Microsoft.AspNetCore.Razor.Utilities.Shared.dll</RazorUtilitiesSharedPath>
+    <RazorUtilitiesSharedPath Condition="'$(RazorUtilitiesSharedPath)' == '' And Exists('$(RazorToolsPath)\Microsoft.AspNetCore.Razor.Utilities.Shared.dll')">$(RazorToolsPath)\Microsoft.AspNetCore.Razor.Utilities.Shared.dll</RazorUtilitiesSharedPath>
+    <RazorObjectPoolPath Condition="Exists('$(RazorSourceGeneratorsPath)\Microsoft.Extensions.ObjectPool.dll')">$(RazorSourceGeneratorsPath)\Microsoft.Extensions.ObjectPool.dll</RazorObjectPoolPath>
+    <RazorObjectPoolPath Condition="'$(RazorObjectPoolPath)' == '' And Exists('$(RazorToolsPath)\Microsoft.Extensions.ObjectPool.dll')">$(RazorToolsPath)\Microsoft.Extensions.ObjectPool.dll</RazorObjectPoolPath>
+  </PropertyGroup>
+</Project>

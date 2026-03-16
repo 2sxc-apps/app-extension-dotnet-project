@@ -1,0 +1,9 @@
+<Project>
+  <!-- Oqtane host detection -->
+  <PropertyGroup>
+    <OqtaneDetectionImported>true</OqtaneDetectionImported>
+    <DetectedOqtaneProd Condition="Exists('$(OqtaneProdBinPath)\Oqtane.Server.dll')">true</DetectedOqtaneProd>
+    <DetectedOqtaneDev Condition="Exists('$(OqtaneDevBinPath)\Oqtane.Server.dll')">true</DetectedOqtaneDev>
+    <DetectedOqtane Condition="'$(DetectedOqtaneProd)' == 'true' Or '$(DetectedOqtaneDev)' == 'true'">true</DetectedOqtane>
+  </PropertyGroup>
+</Project>

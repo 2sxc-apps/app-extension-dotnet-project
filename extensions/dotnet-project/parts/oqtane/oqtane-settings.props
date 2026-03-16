@@ -1,0 +1,9 @@
+<Project>
+  <!-- Oqtane-specific framework, language, and bin selection -->
+  <PropertyGroup>
+    <TargetFramework>$(OqtaneTargetFramework)</TargetFramework>
+    <LangVersion>$(OqtaneLangVersion)</LangVersion>
+    <PathBin Condition="'$(OqtaneIsProd)' == 'true'">$(OqtaneProdBinPath)</PathBin>
+    <PathBin Condition="'$(PathBin)' == ''">$(OqtaneDevBinPath)</PathBin>
+  </PropertyGroup>
+</Project>

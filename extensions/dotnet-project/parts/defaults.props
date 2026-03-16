@@ -1,0 +1,21 @@
+<Project>
+  <!-- User-overridable defaults for the IntelliSense helper -->
+  <PropertyGroup>
+    <HelperHostMode Condition="'$(HelperHostMode)' == ''">Auto</HelperHostMode>
+    <DnnBinPath Condition="'$(DnnBinPath)' == ''">..\..\..\..\bin</DnnBinPath>
+
+    <!-- Oqtane production bin is at the site root, six levels above the app -->
+    <OqtaneProdBinPath Condition="'$(OqtaneProdBinPath)' == ''">..\..\..\..\..\..</OqtaneProdBinPath>
+
+    <!-- Oqtane dev/debug bin is at the site root plus the active TFM output folder -->
+    <OqtaneDevBinPath Condition="'$(OqtaneDevBinPath)' == ''">..\..\..\..\..\..\bin\Debug\net10.0</OqtaneDevBinPath>
+
+    <DnnTargetFramework Condition="'$(DnnTargetFramework)' == ''">net472</DnnTargetFramework>
+    <OqtaneTargetFramework Condition="'$(OqtaneTargetFramework)' == ''">net10.0</OqtaneTargetFramework>
+    <DnnLangVersion Condition="'$(DnnLangVersion)' == ''">8.0</DnnLangVersion>
+    <OqtaneLangVersion Condition="'$(OqtaneLangVersion)' == ''">latest</OqtaneLangVersion>
+
+    <!-- Keep TargetFramework valid before host resolution so validation can run -->
+    <TargetFramework Condition="'$(TargetFramework)' == ''">$(DnnTargetFramework)</TargetFramework>
+  </PropertyGroup>
+</Project>

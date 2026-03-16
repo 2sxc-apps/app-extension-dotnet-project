@@ -1,0 +1,27 @@
+<Project>
+  <!-- Resolve host mode, validate it, then delegate to platform-specific aggregators -->
+  <Import Project="dnn\dnn-detection.props" />
+  <Import Project="oqtane\oqtane-detection.props" />
+
+  <PropertyGroup>
+    <HelperHostModeNormalized>$(HelperHostMode.ToLowerInvariant())</HelperHostModeNormalized>
+
+    <RunningInDnn Condition="'$(HelperHostModeNormalized)' == 'dnn'">true</RunningInDnn>
+    <RunningInOqtane Condition="'$(HelperHostModeNormalized)' == 'oqtane'">true</RunningInOqtane>
+    <RunningInDnn Condition="'$(HelperHostModeNormalized)' == 'auto' And '$(DetectedDnn)' == 'true' And '$(DetectedOqtane)' != 'true'">true</RunningInDnn>
+    <RunningInOqtane Condition="'$(HelperHostModeNormalized)' == 'auto' And '$(DetectedOqtane)' == 'true' And '$(DetectedDnn)' != 'true'">true</RunningInOqtane>
+
+    <OqtaneIsProd Condition="'$(RunningInOqtane)' == 'true' And '$(DetectedOqtaneProd)' == 'true'">true</OqtaneIsProd>
+    <OqtaneIsDev Condition="'$(RunningInOqtane)' == 'true' And '$(DetectedOqtaneDev)' == 'true'">true</OqtaneIsDev>
+    <OqtaneIsDev Condition="'$(RunningInOqtane)' == 'true' And '$(OqtaneIsProd)' != 'true' And '$(OqtaneIsDev)' != 'true'">true</OqtaneIsDev>
+  </PropertyGroup>
+
+  <Target Name="ValidateHelperHostResolution" BeforeTargets="PrepareForBuild">
+    <Error Condition="'$(HelperHostModeNormalized)' != 'auto' And '$(HelperHostModeNormalized)' != 'dnn' And '$(HelperHostModeNormalized)' != 'oqtane'" Text="Invalid HelperHostMode '$(HelperHostMode)'. Valid values: Auto, Dnn, Oqtane." />
+    <Error Condition="'$(HelperHostModeNormalized)' == 'auto' And '$(DetectedDnn)' == 'true' And '$(DetectedOqtane)' == 'true'" Text="Auto-detection is ambiguous: both DNN and Oqtane markers were found. Set HelperHostMode to Dnn or Oqtane, or adjust DnnBinPath|OqtaneProdBinPath|OqtaneDevBinPath." />
+    <Error Condition="'$(HelperHostModeNormalized)' == 'auto' And '$(RunningInDnn)' != 'true' And '$(RunningInOqtane)' != 'true'" Text="Auto-detection failed: no DNN/Oqtane host markers found. Set HelperHostMode explicitly or override DnnBinPath|OqtaneProdBinPath|OqtaneDevBinPath." />
+  </Target>
+
+  <Import Project="dnn\dnn.props" Condition="'$(RunningInDnn)' == 'true'" />
+  <Import Project="oqtane\oqtane.props" Condition="'$(RunningInOqtane)' == 'true'" />
+</Project>

@@ -1,0 +1,5 @@
+<Project>
+  <!-- Aggregate all DNN-specific helper parts -->
+  <Import Project="dnn-settings.props" />
+  <Import Project="dnn-references.props" />
+</Project>

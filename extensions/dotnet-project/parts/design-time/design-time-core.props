@@ -1,0 +1,17 @@
+<Project>
+  <!-- Common design-time settings and Razor inputs -->
+  <PropertyGroup>
+    <DefineConstants>$(DefineConstants);DESIGN_TIME_BUILD</DefineConstants>
+    <NoWarn>$(NoWarn);CS0108;CS0234;CS0115;CS0534;CS0103;CS0114</NoWarn>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <AdditionalFiles Include="**\*.cshtml">
+      <TargetPath>%(RecursiveDir)%(Filename)%(Extension)</TargetPath>
+    </AdditionalFiles>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Analyzer Include="$(RazorCompilerAnalyzerPath)" />
+  </ItemGroup>
+</Project>

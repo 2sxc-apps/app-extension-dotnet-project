@@ -1,0 +1,6 @@
+<Project>
+  <!-- DNN host detection -->
+  <PropertyGroup>
+    <DetectedDnn Condition="Exists('$(DnnBinPath)\DotNetNuke.dll')">true</DetectedDnn>
+  </PropertyGroup>
+</Project>
