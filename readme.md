@@ -17,13 +17,13 @@ The helper is currently composed from one small root import plus a few focused a
   - `host-resolution.props`
   - `common-references.props`
   - `design-time.props` only when `DesignTimeBuild=true`
-  - `edition/ignore-edition-live.import.props`
+  - `edition/ignore-editions.import.props`
 - `host-resolution.props` always imports both detection files, resolves `RunningInDnn` and `RunningInOqtane`, validates `HelperHostMode`, then conditionally imports the DNN or Oqtane branch
 - `dnn/dnn.props` is a thin DNN aggregator that imports `dnn-settings.props` and `dnn-references.props`
 - `oqtane/oqtane.props` is a thin Oqtane aggregator that imports `oqtane-settings.props`
 - `design-time.props` is a design-time-only aggregator for Razor tooling and VS Code IntelliSense support
 - `common-references.props` contains shared references that depend on the resolved `PathBin`
-- `edition/ignore-edition-live.import.props` removes `live\**` from IntelliSense inputs to avoid polymorphism collisions
+- `edition/ignore-editions.import.props` removes edition-specific folders from IntelliSense inputs using `IgnoredEditionDirs`
 
 ## Current Responsibilities
 
@@ -61,6 +61,12 @@ The helper is currently composed from one small root import plus a few focused a
   - wires the Razor analyzer
 - `design-time/dnn-design-time.props`
   - adds the Razor helper assembly references used for legacy Razor IntelliSense when those assemblies can be resolved
+- `edition/ignore-editions.import.props`
+  - defaults `IgnoredEditionDirs` to `live;bs3;bs4` for backward compatibility
+  - supports multiple ignored folders as a semicolon-separated list
+  - removes all matching folders from `None`, `Content`, `Compile`, and `EmbeddedResource`
+  - normalizes simple spaces around semicolons before expanding the list
+  - when overriding from the MSBuild command line, use `%3B` instead of a literal `;`
 
 ## Diagrams
 
@@ -75,7 +81,7 @@ flowchart TD
     ROOT --> HOST[host-resolution.props<br/>shared host resolution and platform dispatch]
     ROOT --> COMMON[common-references.props<br/>shared DLL references from bin and Dependencies]
     ROOT -->|if DesignTimeBuild is true| DT[design-time.props<br/>aggregate Razor design-time tooling]
-    ROOT --> IGN[edition/ignore-edition-live.import.props<br/>exclude live variant files]
+    ROOT --> IGN[edition/edition.props<br/>exclude ignored edition folders]
 
     HOST --> DD[dnn-detection.props<br/>detect DNN markers]
     HOST --> OD[oqtane-detection.props<br/>detect Oqtane markers]
@@ -90,6 +96,8 @@ flowchart TD
     DNN --> DR[dnn-references.props]
 
     OQT --> OS[oqtane-settings.props]
+
+    IGN --> IGNS[IgnoredEditionDirs<br/>default live<br/>semicolon-separated list]
 ```
 
 ### 2. Host resolution and dispatch
@@ -148,4 +156,5 @@ flowchart LR
     RT --> DTDNN[design-time/dnn-design-time.props<br/>Razor Utilities Shared and ObjectPool helper refs]
 
     COMMON[common-references.props] --> CR[include ToSic DLLs from bin<br/>include Connect.Koi if present<br/>include System.Text.Json if present<br/>include DLLs from Dependencies]
+    IGN[edition/ignore-editions.import.props] --> EDI[remove each IgnoredEditionDirs entry<br/>from None Content Compile EmbeddedResource]
 ```

@@ -7,5 +7,5 @@
   <Import Project="parts\host-resolution.props" />
   <Import Project="parts\common-references.props" />
   <Import Project="parts\design-time.props" Condition="'$(DesignTimeBuild)' == 'true'" />
-  <Import Project="parts\edition\ignore-edition-live.import.props" />
+  <Import Project="parts\ignore-editions.import.props" />
 </Project>

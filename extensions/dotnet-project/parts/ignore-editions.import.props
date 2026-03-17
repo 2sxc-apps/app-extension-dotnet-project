@@ -1,0 +1,20 @@
+<Project>
+  <!-- Exclude edition-specific folders from IntelliSense to avoid duplicate class discovery -->
+  <PropertyGroup>
+    <IgnoredEditionDirs Condition="'$(IgnoredEditionDirs)' == ''">live;bs3;bs4</IgnoredEditionDirs>
+    <IgnoredEditionDirsNormalized>$([System.String]::Copy('$(IgnoredEditionDirs)').Trim().Replace('; ', ';').Replace(' ;', ';'))</IgnoredEditionDirsNormalized>
+  </PropertyGroup>
+
+  <ItemGroup Condition="'$(IgnoredEditionDirsNormalized)' != ''">
+    <!-- Property functions escape semicolons, so unescape before expanding into separate items. -->
+    <_IgnoredEditionDir Include="$([MSBuild]::Unescape('$(IgnoredEditionDirsNormalized)'))" />
+    <_IgnoredEditionGlob Include="@(_IgnoredEditionDir -> '%(Identity)\**')" />
+  </ItemGroup>
+
+  <ItemGroup Condition="'$(IgnoredEditionDirsNormalized)' != ''">
+    <None Remove="@(_IgnoredEditionGlob)" />
+    <Content Remove="@(_IgnoredEditionGlob)" />
+    <Compile Remove="@(_IgnoredEditionGlob)" />
+    <EmbeddedResource Remove="@(_IgnoredEditionGlob)" />
+  </ItemGroup>
+</Project>
