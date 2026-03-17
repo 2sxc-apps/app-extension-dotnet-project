@@ -1,0 +1,11 @@
+<Project>
+  <!-- Resolve the first useful DNN path. Prefer a marker match, then an existing folder, then the default. -->
+  <PropertyGroup>
+    <DnnBinPath Condition="'$(DnnBinPath)' == '' And Exists('$(DnnBinPathDefault)\$(DnnFile)')">$(DnnBinPathDefault)</DnnBinPath>
+    <DnnBinPath Condition="'$(DnnBinPath)' == '' And Exists('$(DnnBinPathEditionDefault)\$(DnnFile)')">$(DnnBinPathEditionDefault)</DnnBinPath>
+    <DnnBinPath Condition="'$(DnnBinPath)' == '' And Exists('$(DnnBinPathDefault)')">$(DnnBinPathDefault)</DnnBinPath>
+    <DnnBinPath Condition="'$(DnnBinPath)' == '' And Exists('$(DnnBinPathEditionDefault)')">$(DnnBinPathEditionDefault)</DnnBinPath>
+    <DnnBinPath Condition="'$(DnnBinPath)' == ''">$(DnnBinPathDefault)</DnnBinPath>
+    <DnnPath>$(DnnBinPath)\$(DnnFile)</DnnPath>
+  </PropertyGroup>
+</Project>

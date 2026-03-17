@@ -7,14 +7,14 @@
 
   <ItemGroup Condition="'$(IgnoredEditionDirsNormalized)' != ''">
     <!-- Property functions escape semicolons, so unescape before expanding into separate items. -->
-    <_IgnoredEditionDir Include="$([MSBuild]::Unescape('$(IgnoredEditionDirsNormalized)'))" />
-    <_IgnoredEditionGlob Include="@(_IgnoredEditionDir -> '%(Identity)\**')" />
+    <IgnoredEditionDir Include="$([MSBuild]::Unescape('$(IgnoredEditionDirsNormalized)'))" />
+    <IgnoredEditionGlob Include="@(IgnoredEditionDir -> '%(Identity)\**')" />
   </ItemGroup>
 
   <ItemGroup Condition="'$(IgnoredEditionDirsNormalized)' != ''">
-    <None Remove="@(_IgnoredEditionGlob)" />
-    <Content Remove="@(_IgnoredEditionGlob)" />
-    <Compile Remove="@(_IgnoredEditionGlob)" />
-    <EmbeddedResource Remove="@(_IgnoredEditionGlob)" />
+    <None Remove="@(IgnoredEditionGlob)" />
+    <Content Remove="@(IgnoredEditionGlob)" />
+    <Compile Remove="@(IgnoredEditionGlob)" />
+    <EmbeddedResource Remove="@(IgnoredEditionGlob)" />
   </ItemGroup>
 </Project>

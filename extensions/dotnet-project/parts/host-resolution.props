@@ -1,4 +1,8 @@
 <Project>
+  <!-- Host-specific path resolution stays separate, but must run before host detection. -->
+  <Import Project="dnn\path-resolve.props" />
+  <Import Project="oqtane\path-resolve.props" />
+
   <!-- Resolve host mode, validate it, then delegate to platform-specific aggregators -->
   <Import Project="dnn\dnn-detection.props" />
   <Import Project="oqtane\oqtane-detection.props" />

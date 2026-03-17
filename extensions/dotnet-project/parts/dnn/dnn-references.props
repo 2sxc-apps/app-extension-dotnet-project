@@ -1,6 +1,6 @@
 <Project>
   <!-- DNN-only references, including legacy Razor and design-time helpers -->
-  <ItemGroup>
+  <ItemGroup Condition="'$(PathBin)' != ''">
     <Reference Include="$(PathBin)\DotNetNuke.dll" Condition="Exists('$(PathBin)\DotNetNuke.dll')" />
     <Reference Include="$(PathBin)\DotNetNuke.*.dll" />
     <Reference Include="$(PathBin)\System.Web.Http.dll" Condition="Exists('$(PathBin)\System.Web.Http.dll')" />
@@ -11,7 +11,9 @@
     <Reference Include="$(PathBin)\DotNetNuke.Web.Razor.dll" Condition="Exists('$(PathBin)\DotNetNuke.Web.Razor.dll')" />
     <Reference Include="$(PathBin)\DotNetNuke.Modules.RazorHost.dll" Condition="Exists('$(PathBin)\DotNetNuke.Modules.RazorHost.dll')" />
     <Reference Include="$(PathBin)\ToSic.Sxc.Dnn.Razor.dll" Condition="Exists('$(PathBin)\ToSic.Sxc.Dnn.Razor.dll')" />
+  </ItemGroup>
 
+  <ItemGroup>
     <Reference Include="System.Web" />
     <Reference Include="System.Net.Http" />
   </ItemGroup>

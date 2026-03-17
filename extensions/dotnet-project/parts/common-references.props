@@ -1,9 +1,12 @@
 <Project>
   <!-- References shared by DNN and Oqtane -->
-  <ItemGroup>
+  <ItemGroup Condition="'$(PathBin)' != ''">
     <Reference Include="$(PathBin)\ToSic.*.dll" />
     <Reference Include="$(PathBin)\Connect.Koi.dll" Condition="Exists('$(PathBin)\Connect.Koi.dll')" />
     <Reference Include="$(PathBin)\System.Text.Json.dll" Condition="Exists('$(PathBin)\System.Text.Json.dll')" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Reference Include="Dependencies\*.dll" />
   </ItemGroup>
 </Project>
