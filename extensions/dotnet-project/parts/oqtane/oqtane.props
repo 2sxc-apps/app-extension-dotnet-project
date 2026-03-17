@@ -1,4 +1,5 @@
 <Project>
   <!-- Aggregate all Oqtane-specific helper parts -->
   <Import Project="oqtane-settings.props" />
+  <Import Project="oqtane-references.props" />
 </Project>
