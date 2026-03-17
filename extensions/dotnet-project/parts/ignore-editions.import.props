@@ -8,13 +8,23 @@
   <ItemGroup Condition="'$(IgnoredEditionDirsNormalized)' != ''">
     <!-- Property functions escape semicolons, so unescape before expanding into separate items. -->
     <IgnoredEditionDir Include="$([MSBuild]::Unescape('$(IgnoredEditionDirsNormalized)'))" />
-    <IgnoredEditionGlob Include="@(IgnoredEditionDir -> '%(Identity)\**')" />
+    <IgnoredEditionFileRemove Include="@(IgnoredEditionDir -> '%(Identity)\**\*')" />
+    <IgnoredEditionCompileRemove Include="@(IgnoredEditionDir -> '%(Identity)\**\*.cs')" />
   </ItemGroup>
 
   <ItemGroup Condition="'$(IgnoredEditionDirsNormalized)' != ''">
-    <None Remove="@(IgnoredEditionGlob)" />
-    <Content Remove="@(IgnoredEditionGlob)" />
-    <Compile Remove="@(IgnoredEditionGlob)" />
-    <EmbeddedResource Remove="@(IgnoredEditionGlob)" />
+    <None Remove="@(IgnoredEditionFileRemove)" />
+    <Content Remove="@(IgnoredEditionFileRemove)" />
+    <Compile Remove="@(IgnoredEditionCompileRemove)" />
+    <EmbeddedResource Remove="@(IgnoredEditionFileRemove)" />
   </ItemGroup>
+
+  <Target Name="RemoveIgnoredEditionCompileItems" BeforeTargets="CoreCompile">
+    <ItemGroup Condition="'$(IgnoredEditionDirsNormalized)' != ''">
+      <None Remove="@(IgnoredEditionFileRemove)" />
+      <Content Remove="@(IgnoredEditionFileRemove)" />
+      <Compile Remove="@(IgnoredEditionCompileRemove)" />
+      <EmbeddedResource Remove="@(IgnoredEditionFileRemove)" />
+    </ItemGroup>
+  </Target>
 </Project>
