@@ -6,6 +6,9 @@
   <Import Project="parts\defaults.props" />
   <Import Project="parts\host-resolution.props" />
   <Import Project="parts\common-references.props" />
-  <Import Project="parts\design-time.props" Condition="'$(DesignTimeBuild)' == 'true'" />
   <Import Project="parts\ignore-editions.import.props" />
+  <!-- Only enable the legacy helper-based Razor design-time pipeline for DNN.
+       Oqtane runs on the Web SDK, which already wires up Razor source generators correctly. -->
+  <Import Project="parts\design-time.props" Condition="'$(DesignTimeBuild)' == 'true' AND '$(RunningInDnn)' == 'true'" />
+
 </Project>
