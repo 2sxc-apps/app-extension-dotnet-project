@@ -95,14 +95,41 @@ This keeps the root readable while still allowing host-specific and tooling-spec
   - runs the property evaluation check
   - runs the design-time compile check
   - defaults to the local app `app.csproj`
+  - accepts `-Project` to validate a different `app.csproj`
 
 ## Validation
 
-Run the bundled validator from the app root:
+Use `validate-helper.ps1` after changing any import, host resolution, reference, or design-time file.
+
+The script is a thin wrapper around two `dotnet msbuild` checks:
+
+1. `Property evaluation`
+   Verifies that the helper resolves the expected core values:
+   `RunningInDnn`, `RunningInOqtane`, `TargetFramework`, and `PathBin`.
+2. `Design-time compile`
+   Runs `Compile` with `DesignTimeBuild=true`, `BuildingInsideVisualStudio=true`, and `SkipCompilerExecution=true` to verify the IntelliSense pipeline still evaluates correctly.
+
+Requirements:
+
+- `pwsh`
+- `dotnet`
+
+Common usage:
 
 ```powershell
+# from the app root
 pwsh .\extensions\dotnet-project\scripts\validate-helper.ps1
+
+# from anywhere, against a specific helper app
+pwsh .\extensions\dotnet-project\scripts\validate-helper.ps1 -Project "A:\path\to\app.csproj"
 ```
+
+What the script does:
+
+1. Resolves the project path.
+2. Prints each `dotnet msbuild` command before running it.
+3. Stops immediately if either check fails.
+4. Prints `Validation completed successfully.` if both checks pass.
 
 ## Diagrams
 
