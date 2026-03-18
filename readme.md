@@ -6,6 +6,50 @@ It exists to make app-level `app.csproj` files much easier to set up for Intelli
 
 Find out more on <https://github.com/2sxc-apps/app-extension-dotnet-project>
 
+## Release Note
+
+This extension was created to restore C# IntelliSense in Razor files in VS Code for legacy DNN `net472` apps, after newer C# tooling stopped behaving like the older working version `2.63.52`.
+
+What is included:
+
+- a reusable `app.csproj` helper for 2sxc apps
+- automatic host resolution for DNN and Oqtane
+- DNN-specific legacy Razor design-time support
+- Oqtane support for both release and source-code layouts
+- a validator script to verify that the helper still evaluates and compiles correctly in design-time mode
+
+Supported scenarios:
+
+- DNN 9
+- DNN 10
+- Oqtane 10 release
+- Oqtane 10 source
+
+Recommended minimum:
+
+- 2sxc `21.05.00`
+
+Quick install:
+
+1. install the `dotnet-project` App Extension into the target app
+2. add this import to the app-root `app.csproj`:
+
+```xml
+<Import Project="extensions\dotnet-project\all-in-one.import.csproj" />
+```
+
+3. open the app folder in VS Code
+4. run:
+
+```powershell
+pwsh .\extensions\dotnet-project\scripts\validate-helper.ps1
+```
+
+Further reading:
+
+- 2sxc VS Code Guide: <https://docs.2sxc.org/guides/vscode/index.html>
+- 2sxc App Extensions Technical Docs: <https://docs.2sxc.org/extensions/app-extensions/technical/index.html>
+
 ## Current Build Layout
 
 The helper is currently composed from one small root import plus a few focused parts:
