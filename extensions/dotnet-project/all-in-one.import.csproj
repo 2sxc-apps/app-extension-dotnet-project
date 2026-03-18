@@ -2,14 +2,24 @@
   <!-- This file helps VS Code provide IntelliSense - see https://go.2sxc.org/vscode -->
   <!-- Managed by the 2sxc dotnet-project extension -->
   <!-- Composition root: keep this file small and compose the helper from parts/*.props -->
+
+  <!-- Base project shape -->
   <Import Project="parts\namespace-and-output-type.import.props" />
-  <Import Project="parts\build.import.props" />
+
+  <!-- Always-on helper build settings -->
+  <Import Project="parts\constants.import.props" />
+  <Import Project="parts\warnings.import.props" />
+
+  <!-- Host defaults, detection, and platform dispatch -->
   <Import Project="parts\defaults.import.props" />
   <Import Project="parts\host-resolution.import.props" />
+
+  <!-- Shared references and file filtering -->
   <Import Project="parts\common-references.import.props" />
   <Import Project="parts\ignore-editions.import.props" />
+
   <!-- Only enable the legacy helper-based Razor design-time pipeline for DNN.
        Oqtane runs on the Web SDK, which already wires up Razor source generators correctly. -->
-  <Import Project="parts\design-time.props" Condition="'$(DesignTimeBuild)' == 'true' AND '$(RunningInDnn)' == 'true'" />
+  <Import Project="parts\design-time.import.props" Condition="'$(DesignTimeBuild)' == 'true' And '$(RunningInDnn)' == 'true'" />
 
 </Project>

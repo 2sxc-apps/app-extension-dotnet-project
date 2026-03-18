@@ -2,71 +2,107 @@
 
 This is the app to develop the extension "dotnet-project".
 
-It's meant to make it much easier to setup apps so that they work with IntelliSense and the new .csproj format.
+It exists to make app-level `app.csproj` files much easier to set up for IntelliSense and related editor support.
 
 Find out more on <https://github.com/2sxc-apps/app-extension-dotnet-project>
 
 ## Current Build Layout
 
-The helper is currently composed from one small root import plus a few focused aggregators:
+The helper is currently composed from one small root import plus a few focused parts:
 
 - `app.csproj` imports `extensions/dotnet-project/all-in-one.import.csproj`
 - `all-in-one.import.csproj` is the composition root and imports:
   - `namespace-and-output-type.import.props`
-  - `defaults.props`
-  - `host-resolution.props`
-  - `common-references.props`
-  - `design-time.props` only when `DesignTimeBuild=true`
-  - `edition/ignore-editions.import.props`
-- `host-resolution.props` always imports both detection files, resolves `RunningInDnn` and `RunningInOqtane`, validates `HelperHostMode`, then conditionally imports the DNN or Oqtane branch
-- `dnn/dnn.props` is a thin DNN aggregator that imports `dnn-settings.props` and `dnn-references.props`
-- `oqtane/oqtane.props` is a thin Oqtane aggregator that imports `oqtane-settings.props`
-- `design-time.props` is a design-time-only aggregator for Razor tooling and VS Code IntelliSense support
-- `common-references.props` contains shared references that depend on the resolved `PathBin`
-- `edition/ignore-editions.import.props` removes edition-specific folders from IntelliSense inputs using `IgnoredEditionDirs`
+  - `constants.import.props`
+  - `warnings.import.props`
+  - `defaults.import.props`
+  - `host-resolution.import.props`
+  - `common-references.import.props`
+  - `ignore-editions.import.props`
+  - `design-time.import.props` only when `DesignTimeBuild=true` and `RunningInDnn=true`
+
+## Naming and Structure
+
+The helper now follows a simple convention similar to the shared import setup in `Src/SharedImports`:
+
+- top-level `*.import.props` files are the public composition surface
+- nested `*.props` files are implementation details used by one area such as `dnn`, `oqtane`, or `design-time`
+- `all-in-one.import.csproj` stays small and readable, with one import per concern and comments that explain the import order
+
+This keeps the root readable while still allowing host-specific and tooling-specific internals to stay separate.
 
 ## Current Responsibilities
 
-- `defaults.props`
-  - defines default host mode, bin paths, target frameworks and language versions
+- `namespace-and-output-type.import.props`
+  - sets `RootNamespace=AppCode`
+  - sets `OutputType=Library`
+- `constants.import.props`
+  - adds the stable `DESIGN_TIME_BUILD` constant
+- `warnings.import.props`
+  - centralizes warning suppressions needed by the helper project
+- `defaults.import.props`
+  - defines default host mode
+  - defines default target frameworks and language versions
+  - defines marker file names for DNN and Oqtane detection
+  - defines default path candidates for normal and edition-based app layouts
   - provides a fallback `TargetFramework` so validation can run before host resolution completes
-- `host-resolution.props`
-  - imports `dnn/dnn-detection.props` and `oqtane/oqtane-detection.props`
+- `host-resolution.import.props`
+  - imports DNN and Oqtane path resolution first
+  - imports DNN and Oqtane detection second
   - normalizes `HelperHostMode`
   - sets `RunningInDnn` or `RunningInOqtane`
   - derives `OqtaneIsProd` and `OqtaneIsDev`
-  - fails fast on invalid, ambiguous, or missing host resolution
+  - validates invalid, ambiguous, and missing host resolution
   - conditionally imports `dnn/dnn.props` or `oqtane/oqtane.props`
+- `dnn/path-resolve.props`
+  - resolves the first useful DNN bin path from marker hits, existing folders, then defaults
 - `dnn/dnn-detection.props`
-  - sets `DetectedDnn=true` when `DotNetNuke.dll` exists under `DnnBinPath`
+  - sets `DetectedDnn=true` when the resolved DNN marker file exists
 - `dnn/dnn-settings.props`
   - sets `TargetFramework`, `LangVersion`, and `PathBin` for the DNN branch
 - `dnn/dnn-references.props`
-  - adds DNN DLL references
-  - adds classic legacy Razor DLL references used in DNN scenarios
-  - currently also adds the ASP.NET Core 2.2 Razor package references used by the helper
+  - adds DNN-specific assembly references
+  - adds classic Razor 3 era DNN references
+  - keeps the ASP.NET Core 2.2 Razor package workaround used by the helper
+- `oqtane/path-resolve.props`
+  - resolves the first useful Oqtane prod and dev paths from marker hits, existing folders, then defaults
 - `oqtane/oqtane-detection.props`
   - detects Oqtane prod and dev layouts using `Oqtane.Server.dll`
 - `oqtane/oqtane-settings.props`
   - sets `TargetFramework` and `LangVersion` for the Oqtane branch
   - sets `PathBin` to the prod path when prod is detected, otherwise falls back to the dev path
-- `common-references.props`
-  - adds shared references from `PathBin` plus `Dependencies\*.dll`
+- `oqtane/oqtane-references.props`
+  - adds Oqtane-specific assembly references
+- `common-references.import.props`
+  - adds shared references from `PathBin`
+  - adds `Dependencies\*.dll`
+- `ignore-editions.import.props`
+  - defaults `IgnoredEditionDirs` to `live;bs3;bs4`
+  - supports a semicolon-separated list of ignored edition folders
+  - removes matching items from `None`, `Content`, `Compile`, and `EmbeddedResource`
+  - uses `%3B` instead of literal `;` when overridden on the MSBuild command line
+- `design-time.import.props`
+  - aggregates legacy DNN Razor design-time support
+  - is imported only for DNN design-time builds
 - `design-time/razor-tooling.props`
   - resolves Razor analyzer and helper assembly paths from the installed Razor SDK
 - `design-time/design-time-core.props`
-  - adds `DESIGN_TIME_BUILD`
-  - extends `NoWarn`
   - includes `**\*.cshtml` as `AdditionalFiles`
   - wires the Razor analyzer
 - `design-time/dnn-design-time.props`
-  - adds the Razor helper assembly references used for legacy Razor IntelliSense when those assemblies can be resolved
-- `edition/ignore-editions.import.props`
-  - defaults `IgnoredEditionDirs` to `live;bs3;bs4` for backward compatibility
-  - supports multiple ignored folders as a semicolon-separated list
-  - removes all matching folders from `None`, `Content`, `Compile`, and `EmbeddedResource`
-  - normalizes simple spaces around semicolons before expanding the list
-  - when overriding from the MSBuild command line, use `%3B` instead of a literal `;`
+  - adds the helper assembly references needed for legacy DNN Razor IntelliSense
+- `scripts/validate-helper.ps1`
+  - runs the property evaluation check
+  - runs the design-time compile check
+  - defaults to the local app `app.csproj`
+
+## Validation
+
+Run the bundled validator from the app root:
+
+```powershell
+pwsh .\extensions\dotnet-project\scripts\validate-helper.ps1
+```
 
 ## Diagrams
 
@@ -76,85 +112,72 @@ The helper is currently composed from one small root import plus a few focused a
 flowchart TD
     APP[app.csproj] --> ROOT[all-in-one.import.csproj]
 
-    ROOT --> NS[namespace-and-output-type.import.props<br/>RootNamespace = AppCode<br/>OutputType = Library]
-    ROOT --> DEF[defaults.props<br/>defaults for HelperHostMode, paths, TFMs, LangVersion]
-    ROOT --> HOST[host-resolution.props<br/>shared host resolution and platform dispatch]
-    ROOT --> COMMON[common-references.props<br/>shared DLL references from bin and Dependencies]
-    ROOT -->|if DesignTimeBuild is true| DT[design-time.props<br/>aggregate Razor design-time tooling]
-    ROOT --> IGN[edition/edition.props<br/>exclude ignored edition folders]
+    ROOT --> NS[namespace-and-output-type.import.props]
+    ROOT --> CONST[constants.import.props]
+    ROOT --> WARN[warnings.import.props]
+    ROOT --> DEF[defaults.import.props]
+    ROOT --> HOST[host-resolution.import.props]
+    ROOT --> COMMON[common-references.import.props]
+    ROOT --> EDIT[ignore-editions.import.props]
+    ROOT -->|DesignTimeBuild and RunningInDnn| DT[design-time.import.props]
 
-    HOST --> DD[dnn-detection.props<br/>detect DNN markers]
-    HOST --> OD[oqtane-detection.props<br/>detect Oqtane markers]
-    HOST -->|if RunningInDnn is true| DNN[dnn/dnn.props<br/>aggregate DNN parts]
-    HOST -->|if RunningInOqtane is true| OQT[oqtane/oqtane.props<br/>aggregate Oqtane parts]
+    HOST --> DNN[dnn/dnn.props]
+    HOST --> OQT[oqtane/oqtane.props]
 
-    DT --> RAZOR[design-time/razor-tooling.props<br/>resolve analyzer and Razor helper paths]
-    DT --> DTC[design-time/design-time-core.props<br/>constants, NoWarn, AdditionalFiles, Analyzer]
-    DT --> DTDNN[design-time/dnn-design-time.props<br/>legacy Razor helper references]
+    DNN --> DNNSET[dnn-settings.props]
+    DNN --> DNNREF[dnn-references.props]
 
-    DNN --> DS[dnn-settings.props]
-    DNN --> DR[dnn-references.props]
+    OQT --> OQTSET[oqtane-settings.props]
+    OQT --> OQTREF[oqtane-references.props]
 
-    OQT --> OS[oqtane-settings.props]
-
-    IGN --> IGNS[IgnoredEditionDirs<br/>default live<br/>semicolon-separated list]
+    DT --> RAZOR[design-time/razor-tooling.props]
+    DT --> DTCORE[design-time/design-time-core.props]
+    DT --> DTDNN[design-time/dnn-design-time.props]
 ```
 
 ### 2. Host resolution and dispatch
 
 ```mermaid
 flowchart TD
-    DEF[defaults.props] --> HM[HelperHostMode default:<br/>if empty => Auto]
-    DEF --> DB[DnnBinPath default:<br/>..\\..\\..\\..\\bin]
-    DEF --> OPB[OqtaneProdBinPath default:<br/>..\\..\\..\\..\\..\\..]
-    DEF --> ODB[OqtaneDevBinPath default:<br/>..\\..\\..\\..\\..\\..\\bin\\Debug\\net10.0]
+    DEF[defaults.import.props] --> DNNPATH[dnn/path-resolve.props]
+    DEF --> OQTPATH[oqtane/path-resolve.props]
 
-    HR[host-resolution.props] --> DD[dnn-detection.props<br/>if DotNetNuke.dll exists under DnnBinPath<br/>then DetectedDnn = true]
-    OPB --> OD
-    ODB --> OD[oqtane-detection.props<br/>if Oqtane.Server.dll exists in prod path<br/>then DetectedOqtaneProd = true<br/>if Oqtane.Server.dll exists in dev path<br/>then DetectedOqtaneDev = true<br/>if either is true<br/>then DetectedOqtane = true]
+    DNNPATH --> DNNDET[dnn-detection.props]
+    OQTPATH --> OQTDET[oqtane-detection.props]
 
-    HM --> MODE{HelperHostModeNormalized}
-    DD --> AUTO
-    OD --> AUTO
-    HR --> MODE
+    HOST[host-resolution.import.props] --> MODE{HelperHostMode}
+    DNNDET --> AUTO{Auto detection}
+    OQTDET --> AUTO
 
-    MODE -->|dnn| RD[RunningInDnn = true]
-    MODE -->|oqtane| RO[RunningInOqtane = true]
-    MODE -->|auto| AUTO{Auto detection}
+    MODE -->|Dnn| RD[RunningInDnn]
+    MODE -->|Oqtane| RO[RunningInOqtane]
+    MODE -->|Auto| AUTO
 
-    AUTO -->|only DNN detected| RD
-    AUTO -->|only Oqtane detected| RO
-    AUTO -->|both detected| E1[Error:<br/>ambiguous host detection]
-    AUTO -->|neither branch matches| E2[Error:<br/>no host markers found]
+    AUTO -->|only DNN marker| RD
+    AUTO -->|only Oqtane marker| RO
+    AUTO -->|both markers| E1[Error: ambiguous host]
+    AUTO -->|no markers| E2[Error: no host found]
 
-    MODE -->|invalid mode| E3[Error:<br/>invalid HelperHostMode]
-
-    RO --> PROD{DetectedOqtaneProd = true?}
-    PROD -->|yes| P[OqtaneIsProd = true]
-    RO --> DEVCHK{DetectedOqtaneDev = true?}
-    DEVCHK -->|yes| DEV[OqtaneIsDev = true]
-    PROD -->|no prod and no dev marker| DEV
-
-    RD --> IMPD[host-resolution imports dnn.props]
-    RO --> IMPO[host-resolution imports oqtane.props]
+    RD --> DNN[dnn/dnn.props]
+    RO --> OQT[oqtane/oqtane.props]
 ```
 
-### 3. Platform-specific and design-time branches
+### 3. Platform and tooling branches
 
 ```mermaid
 flowchart LR
-    RD[RunningInDnn = true] --> DS[dnn-settings.props<br/>imported only in DNN branch<br/>TargetFramework from DnnTargetFramework<br/>LangVersion from DnnLangVersion<br/>PathBin from DnnBinPath]
-    RD --> DR[dnn-references.props<br/>DotNetNuke references<br/>System.Web references<br/>legacy Razor runtime references<br/>ASP.NET Core 2.2 Razor package references]
+    CONST --> B1[DESIGN_TIME_BUILD constant]
+    WARN --> B2[NoWarn helper suppressions]
 
-    RO[RunningInOqtane = true] --> OS[oqtane-settings.props<br/>imported only in Oqtane branch<br/>TargetFramework from OqtaneTargetFramework<br/>LangVersion from OqtaneLangVersion]
-    P[OqtaneIsProd = true] --> OSP[PathBin becomes OqtaneProdBinPath]
-    DEV[OqtaneIsDev = true] --> OSD[if PathBin is empty<br/>use OqtaneDevBinPath]
+    RD[RunningInDnn] --> DS[dnn-settings.props<br/>net48 and DNN bin path]
+    RD --> DR[dnn-references.props<br/>DNN and legacy Razor references]
 
-    DT[design-time.props<br/>imported only for DesignTimeBuild] --> RT[design-time tooling aggregate]
-    RT --> DTC[design-time-core.props<br/>DESIGN_TIME_BUILD constant<br/>NoWarn extensions<br/>AdditionalFiles and Analyzer wiring]
-    RT --> RZ[design-time/razor-tooling.props<br/>resolve analyzer and helper assembly paths<br/>from Razor SDK source-generators or tools]
-    RT --> DTDNN[design-time/dnn-design-time.props<br/>Razor Utilities Shared and ObjectPool helper refs]
+    RO[RunningInOqtane] --> OS[oqtane-settings.props<br/>net10.0 and resolved Oqtane path]
+    RO --> OR[oqtane-references.props<br/>Oqtane references]
 
-    COMMON[common-references.props] --> CR[include ToSic DLLs from bin<br/>include Connect.Koi if present<br/>include System.Text.Json if present<br/>include DLLs from Dependencies]
-    IGN[edition/ignore-editions.import.props] --> EDI[remove each IgnoredEditionDirs entry<br/>from None Content Compile EmbeddedResource]
+    EDIT[ignore-editions.import.props] --> EI[remove live bs3 bs4 by default<br/>or any IgnoredEditionDirs override]
+
+    DT[design-time.import.props] --> RZ[resolve Razor SDK tooling paths]
+    DT --> AC[include cshtml as AdditionalFiles]
+    DT --> HR[add DNN legacy Razor helper refs]
 ```

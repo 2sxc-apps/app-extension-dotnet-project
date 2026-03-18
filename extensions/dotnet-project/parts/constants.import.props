@@ -1,0 +1,6 @@
+<Project>
+  <PropertyGroup>
+    <!-- This project exists only to drive editor support, so keep the design-time symbol stable. -->
+    <DefineConstants>$(DefineConstants);DESIGN_TIME_BUILD</DefineConstants>
+  </PropertyGroup>
+</Project>
