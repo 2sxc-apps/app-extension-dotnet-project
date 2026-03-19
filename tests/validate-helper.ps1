@@ -32,8 +32,9 @@ Invoke-MsbuildCheck `
     'msbuild',
     $projectPath,
     '-nologo',
-    '-getProperty:DnnIsRunning',
-    '-getProperty:OqtaneIsRunning',
+    '-getProperty:CmsType',
+    #'-getProperty:DnnIsRunning',
+    #'-getProperty:OqtaneIsRunning',
     '-getProperty:TargetFramework',
     '-getProperty:PathBin'
   )

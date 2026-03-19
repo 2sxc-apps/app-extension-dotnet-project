@@ -4,29 +4,29 @@
   <!-- Composition root: keep this file small and compose the helper from parts/*.props -->
 
   <!-- Base project shape: Root Namespace "AppCode" and Output Type "Library" -->
-  <Import Project="parts\namespace-and-output-type.props" />
+  <Import Project="parts\shared\namespace-and-output-type.props" />
 
   <!-- C# DevKit build settings -->
   <Import Project="parts\build\all.props" />
 
   <!-- Host defaults, detection, and platform dispatch -->
-  <Import Project="parts\defaults.props" />
-  <Import Project="parts\detect-cms.props" />
+  <Import Project="parts\defaults.props" /> <!-- TODO: THIS ONE FEELS USELESS, MUST CHECK -->
+  <Import Project="parts\environment\detect-cms.props" />
 
   <!-- If DNN, first set properties, then import DLLs -->
-  <Import Project="parts\dnn\properties.props" Condition="'$(DnnIsRunning)' == 'true'" />
-  <Import Project="parts\dnn\import-dlls.props" Condition="'$(DnnIsRunning)' == 'true'" />
+  <Import Project="parts\dnn\properties.props" Condition="'$(CmsType)' == 'dnn'" />
+  <Import Project="parts\dnn\import-dlls.props" Condition="'$(CmsType)' == 'dnn'" />
 
   <!-- If Oqtane, first set properties, then import DLLs -->
-  <Import Project="parts\oqtane\properties.props" Condition="'$(OqtaneIsRunning)' == 'true'" />
-  <Import Project="parts\oqtane\import-dlls.props" Condition="'$(OqtaneIsRunning)' == 'true'" />
+  <Import Project="parts\oqtane\properties.props" Condition="'$(CmsType)' == 'oqtane'" />
+  <Import Project="parts\oqtane\import-dlls.props" Condition="'$(CmsType)' == 'oqtane'" />
 
   <!-- Shared references and file filtering -->
   <Import Project="parts\shared\import-dlls.props" />
-  <Import Project="parts\ignore-editions.props" />
+  <Import Project="parts\environment\ignore-editions.props" />
 
   <!-- Only enable the legacy helper-based Razor design-time pipeline for DNN.
        Oqtane runs on the Web SDK, which already wires up Razor source generators correctly. -->
-  <Import Project="parts\design-time\all.props" Condition="'$(DesignTimeBuild)' == 'true' And '$(DnnIsRunning)' == 'true'" />
+  <Import Project="parts\design-time\all.props" Condition="'$(DesignTimeBuild)' == 'true' And '$(CmsType)' == 'dnn'" />
 
 </Project>

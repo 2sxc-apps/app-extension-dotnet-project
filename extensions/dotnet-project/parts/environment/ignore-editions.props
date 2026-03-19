@@ -1,5 +1,7 @@
 <Project>
   <!-- Exclude edition-specific folders from IntelliSense to avoid duplicate class discovery -->
+
+  <!-- Define the default ignored edition directories -->
   <PropertyGroup>
     <IgnoredEditionDirs Condition="'$(IgnoredEditionDirs)' == ''">live;bs3;bs4</IgnoredEditionDirs>
     <!-- TODO: why the complicated ::Copy? -->
