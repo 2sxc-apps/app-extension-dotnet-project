@@ -1,6 +1,0 @@
-<Project>
-  <!-- DNN host detection -->
-  <PropertyGroup>
-    <DetectedDnn Condition="Exists('$(DnnPath)')">true</DetectedDnn>
-  </PropertyGroup>
-</Project>

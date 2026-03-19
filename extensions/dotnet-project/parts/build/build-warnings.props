@@ -1,6 +1,0 @@
-<Project>
-  <PropertyGroup>
-    <!-- Legacy Razor and partial host assemblies trigger known diagnostics in the helper project. -->
-    <NoWarn>$(NoWarn);CS0108;CS0234;CS0115;CS0534;CS0103;CS0114;MVC1000</NoWarn>
-  </PropertyGroup>
-</Project>

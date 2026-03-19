@@ -1,0 +1,16 @@
+<Project>
+  <!-- Resolve the DNN marker path for both standard and edition-based app layouts. -->
+  <PropertyGroup>
+    <_DnnBinPathDefault>..\..\..\..\bin</_DnnBinPathDefault>
+    <_DnnBinPathEditionDefault>..\..\..\..\..\bin</_DnnBinPathEditionDefault>
+
+    <DnnBinPath Condition="'$(DnnBinPath)' == '' And Exists('$(_DnnBinPathDefault)\$(DnnFile)')">$(_DnnBinPathDefault)</DnnBinPath>
+    <DnnBinPath Condition="'$(DnnBinPath)' == '' And Exists('$(_DnnBinPathEditionDefault)\$(DnnFile)')">$(_DnnBinPathEditionDefault)</DnnBinPath>
+    <DnnBinPath Condition="'$(DnnBinPath)' == '' And Exists('$(_DnnBinPathDefault)')">$(_DnnBinPathDefault)</DnnBinPath>
+    <DnnBinPath Condition="'$(DnnBinPath)' == '' And Exists('$(_DnnBinPathEditionDefault)')">$(_DnnBinPathEditionDefault)</DnnBinPath>
+    <DnnBinPath Condition="'$(DnnBinPath)' == ''">$(_DnnBinPathDefault)</DnnBinPath>
+
+    <_DnnMarkerPath>$(DnnBinPath)\$(DnnFile)</_DnnMarkerPath>
+    <_DetectedDnn Condition="Exists('$(_DnnMarkerPath)')">true</_DetectedDnn>
+  </PropertyGroup>
+</Project>

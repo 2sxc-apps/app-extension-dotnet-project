@@ -1,8 +1,0 @@
-<Project>
-  <!-- Oqtane host detection -->
-  <PropertyGroup>
-    <DetectedOqtaneProd Condition="Exists('$(OqtaneProdPath)')">true</DetectedOqtaneProd>
-    <DetectedOqtaneDev Condition="Exists('$(OqtaneDevPath)')">true</DetectedOqtaneDev>
-    <DetectedOqtane Condition="'$(DetectedOqtaneProd)' == 'true' Or '$(DetectedOqtaneDev)' == 'true'">true</DetectedOqtane>
-  </PropertyGroup>
-</Project>

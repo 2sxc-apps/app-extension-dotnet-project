@@ -10,12 +10,12 @@
   <Import Project="parts\build\all.props" />
 
   <!-- Host defaults, detection, and platform dispatch -->
-  <Import Project="parts\defaults.import.props" />
-  <Import Project="parts\host-resolution.import.props" />
+  <Import Project="parts\defaults.props" />
+  <Import Project="parts\host-resolution.props" />
 
   <!-- Shared references and file filtering -->
-  <Import Project="parts\common-references.import.props" />
-  <Import Project="parts\ignore-editions.import.props" />
+  <Import Project="parts\common-references.props" />
+  <Import Project="parts\ignore-editions.props" />
 
   <!-- Only enable the legacy helper-based Razor design-time pipeline for DNN.
        Oqtane runs on the Web SDK, which already wires up Razor source generators correctly. -->

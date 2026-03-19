@@ -1,0 +1,15 @@
+<Project>
+  <!-- User-overridable defaults for the IntelliSense helper -->
+  <PropertyGroup>
+    <HelperHostMode Condition="'$(HelperHostMode)' == ''">Auto</HelperHostMode>
+    <DnnTargetFramework Condition="'$(DnnTargetFramework)' == ''">net48</DnnTargetFramework>
+    <OqtaneTargetFramework Condition="'$(OqtaneTargetFramework)' == ''">net10.0</OqtaneTargetFramework>
+    <DnnLangVersion Condition="'$(DnnLangVersion)' == ''">8.0</DnnLangVersion>
+    <OqtaneLangVersion Condition="'$(OqtaneLangVersion)' == ''">latest</OqtaneLangVersion>
+    <DnnFile Condition="'$(DnnFile)' == ''">DotNetNuke.dll</DnnFile>
+    <OqtaneFile Condition="'$(OqtaneFile)' == ''">Oqtane.Server.dll</OqtaneFile>
+
+    <!-- Keep TargetFramework valid before host resolution so validation can run -->
+    <TargetFramework Condition="'$(TargetFramework)' == ''">$(DnnTargetFramework)</TargetFramework>
+  </PropertyGroup>
+</Project>

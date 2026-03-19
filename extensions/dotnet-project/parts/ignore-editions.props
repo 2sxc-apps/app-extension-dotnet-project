@@ -1,0 +1,32 @@
+<Project>
+  <!-- Exclude edition-specific folders from IntelliSense to avoid duplicate class discovery -->
+  <PropertyGroup>
+    <IgnoredEditionDirs Condition="'$(IgnoredEditionDirs)' == ''">live;bs3;bs4</IgnoredEditionDirs>
+    <_IgnoredEditionDirsNormalized>$([System.String]::Copy('$(IgnoredEditionDirs)').Trim().Replace('; ', ';').Replace(' ;', ';'))</_IgnoredEditionDirsNormalized>
+  </PropertyGroup>
+
+  <ItemGroup Condition="'$(_IgnoredEditionDirsNormalized)' != ''">
+    <!-- Property functions escape semicolons, so unescape before expanding into separate items. -->
+    <_IgnoredEditionDir Include="$([MSBuild]::Unescape('$(_IgnoredEditionDirsNormalized)'))" />
+    <_IgnoredEditionFileRemove Include="@(_IgnoredEditionDir -> '%(Identity)\**\*')" />
+    <_IgnoredEditionCompileRemove Include="@(_IgnoredEditionDir -> '%(Identity)\**\*.cs')" />
+  </ItemGroup>
+
+  <!-- Remove ignored editions from the current item graph as early as possible. -->
+  <ItemGroup Condition="'$(_IgnoredEditionDirsNormalized)' != ''">
+    <None Remove="@(_IgnoredEditionFileRemove)" />
+    <Content Remove="@(_IgnoredEditionFileRemove)" />
+    <Compile Remove="@(_IgnoredEditionCompileRemove)" />
+    <EmbeddedResource Remove="@(_IgnoredEditionFileRemove)" />
+  </ItemGroup>
+
+  <!-- Repeat the removal just before compile because SDK/default item inference can re-add files later. -->
+  <Target Name="RemoveIgnoredEditionCompileItems" BeforeTargets="CoreCompile">
+    <ItemGroup Condition="'$(_IgnoredEditionDirsNormalized)' != ''">
+      <None Remove="@(_IgnoredEditionFileRemove)" />
+      <Content Remove="@(_IgnoredEditionFileRemove)" />
+      <Compile Remove="@(_IgnoredEditionCompileRemove)" />
+      <EmbeddedResource Remove="@(_IgnoredEditionFileRemove)" />
+    </ItemGroup>
+  </Target>
+</Project>
