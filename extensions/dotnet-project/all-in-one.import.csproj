@@ -14,12 +14,12 @@
   <Import Project="parts\detect-cms.props" />
 
   <!-- If DNN, first set properties, then import DLLs -->
-  <Import Project="dnn\properties.props" Condition="'$(DnnIsRunning)' == 'true'" />
-  <Import Project="dnn\import-dlls.props" Condition="'$(DnnIsRunning)' == 'true'" />
+  <Import Project="parts\dnn\properties.props" Condition="'$(DnnIsRunning)' == 'true'" />
+  <Import Project="parts\dnn\import-dlls.props" Condition="'$(DnnIsRunning)' == 'true'" />
 
   <!-- If Oqtane, first set properties, then import DLLs -->
-  <Import Project="oqtane\properties.props" Condition="'$(OqtaneIsRunning)' == 'true'" />
-  <Import Project="oqtane\import-dlls.props" Condition="'$(OqtaneIsRunning)' == 'true'" />
+  <Import Project="parts\oqtane\properties.props" Condition="'$(OqtaneIsRunning)' == 'true'" />
+  <Import Project="parts\oqtane\import-dlls.props" Condition="'$(OqtaneIsRunning)' == 'true'" />
 
   <!-- Shared references and file filtering -->
   <Import Project="parts\shared\import-dlls.props" />
