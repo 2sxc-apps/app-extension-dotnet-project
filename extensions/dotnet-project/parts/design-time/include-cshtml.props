@@ -6,7 +6,5 @@
     </AdditionalFiles>
   </ItemGroup>
 
-  <ItemGroup>
-    <Analyzer Include="$(RazorCompilerAnalyzerPath)" />
-  </ItemGroup>
+
 </Project>
