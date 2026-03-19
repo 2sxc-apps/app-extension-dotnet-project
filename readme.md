@@ -151,10 +151,10 @@ Common usage:
 
 ```powershell
 # from the app root
-pwsh .\extensions\dotnet-project\scripts\validate-helper.ps1
+pwsh .\tests\validate-helper.ps1
 
 # from anywhere, against a specific helper app
-pwsh .\extensions\dotnet-project\scripts\validate-helper.ps1 -Project "A:\path\to\app.csproj"
+pwsh .\tests\validate-helper.ps1 -Project "A:\path\to\app.csproj"
 ```
 
 What the script does:

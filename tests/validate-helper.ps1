@@ -1,5 +1,5 @@
 param(
-  [string]$Project = (Join-Path $PSScriptRoot '..\..\..\app.csproj')
+  [string]$Project = (Join-Path $PSScriptRoot '..\app.csproj')
 )
 
 Set-StrictMode -Version Latest
