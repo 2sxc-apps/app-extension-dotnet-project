@@ -6,10 +6,10 @@
   <!-- Base project shape: Root Namespace "AppCode" and Output Type "Library" -->
   <Import Project="parts\shared\namespace-and-output-type.props" />
 
-  <!-- C# DevKit build settings -->
+  <!-- C# DevKit build settings (constants and warnings) -->
   <Import Project="parts\build\all.props" />
 
-  <!-- Host defaults, detection, and platform dispatch -->
+  <!-- Detect the CMS used - result is valid CmsType and PathBin -->
   <Import Project="parts\defaults.props" /> <!-- TODO: THIS ONE FEELS USELESS, MUST CHECK -->
   <Import Project="parts\environment\detect-cms.props" />
 
@@ -23,9 +23,9 @@
 
   <!-- Shared references and file filtering -->
   <Import Project="parts\shared\import-dlls.props" />
-  <Import Project="parts\environment\ignore-editions.props" />
+  <Import Project="parts\shared\ignore-editions.props" />
 
-  <!-- Only enable the legacy helper-based Razor design-time pipeline for DNN.
+  <!-- DNN only: enable the legacy helper-based Razor design-time pipeline for DNN.
        Oqtane runs on the Web SDK, which already wires up Razor source generators correctly. -->
   <Import Project="parts\dnn-intellisense\all.props" Condition="'$(DesignTimeBuild)' == 'true' And '$(CmsType)' == 'dnn'" />
 
