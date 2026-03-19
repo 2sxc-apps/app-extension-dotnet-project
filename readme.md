@@ -59,10 +59,10 @@ The helper is currently composed from one small root import plus a few focused g
   - `namespace-and-output-type.props`
   - `build/all.props`
   - `defaults.props`
-  - `host-resolution.props` (switches between `dnn/all.props` and `oqtane/all.props` based on host detection)
+  - `detect-cms.props` (switches between `dnn/all.props` and `oqtane/all.props` based on host detection)
   - `common-references.props`
   - `ignore-editions.props`
-  - `design-time/all.props` only when `DesignTimeBuild=true` and `RunningInDnn=true`
+  - `design-time/all.props` only when `DesignTimeBuild=true` and `DnnIsRunning=true`
 
 ## Naming and Structure
 
@@ -87,10 +87,10 @@ This keeps the import order explicit.
 - `defaults.props`
   - defines public defaults such as host mode, target frameworks, language versions, and marker file names
   - provides a fallback `TargetFramework` so validation can run before host resolution completes
-- `host-resolution.props`
+- `detect-cms.props`
   - imports `dnn/detect.props` and `oqtane/detect.props`
-  - normalizes `HelperHostMode`
-  - sets `RunningInDnn` or `RunningInOqtane`
+  - normalizes `CmsType`
+  - sets `DnnIsRunning` or `OqtaneIsRunning`
   - validates invalid, ambiguous, and missing host resolution
   - conditionally imports `dnn/all.props` or `oqtane/all.props`
 - `dnn/detect.props`
@@ -138,7 +138,7 @@ The script is a thin wrapper around two `dotnet msbuild` checks:
 
 1. `Property evaluation`
    Verifies that the helper resolves the expected core values:
-   `RunningInDnn`, `RunningInOqtane`, `TargetFramework`, and `PathBin`.
+   `DnnIsRunning`, `OqtaneIsRunning`, `TargetFramework`, and `PathBin`.
 2. `Design-time compile`
    Runs `Compile` with `DesignTimeBuild=true`, `BuildingInsideVisualStudio=true`, and `SkipCompilerExecution=true` to verify the IntelliSense pipeline still evaluates correctly.
 
@@ -175,15 +175,15 @@ flowchart TD
     ROOT --> NS[namespace-and-output-type.props]
     ROOT --> BUILD[build/all.props]
     ROOT --> DEF[defaults.props]
-    ROOT --> HOST[host-resolution.props]
+    ROOT --> HOST[detect-cms.props]
     ROOT --> COMMON[common-references.props]
     ROOT --> EDIT[ignore-editions.props]
-    ROOT -->|DesignTimeBuild and RunningInDnn| DT[design-time/all.props]
+    ROOT -->|DesignTimeBuild and DnnIsRunning| DT[design-time/all.props]
 
     HOST --> DNNDET[dnn/detect.props]
     HOST --> OQTDET[oqtane/detect.props]
-    HOST -->|if RunningInDnn| DNN[dnn/all.props]
-    HOST -->|if RunningInOqtane| OQT[oqtane/all.props]
+    HOST -->|if DnnIsRunning| DNN[dnn/all.props]
+    HOST -->|if OqtaneIsRunning| OQT[oqtane/all.props]
 
     DT --> RAZOR[design-time/razor-tooling.props]
     DT --> DTCORE[design-time/design-time-core.props]
@@ -197,12 +197,12 @@ flowchart TD
     DEF[defaults.props] --> DNNDET[dnn/detect.props]
     DEF --> OQTDET[oqtane/detect.props]
 
-    HOST[host-resolution.props] --> MODE{HelperHostMode}
+    HOST[detect-cms.props] --> MODE{CmsType}
     DNNDET --> AUTO{Auto detection}
     OQTDET --> AUTO
 
-    MODE -->|Dnn| RD[RunningInDnn]
-    MODE -->|Oqtane| RO[RunningInOqtane]
+    MODE -->|Dnn| RD[DnnIsRunning]
+    MODE -->|Oqtane| RO[OqtaneIsRunning]
     MODE -->|Auto| AUTO
 
     AUTO -->|only DNN marker| RD

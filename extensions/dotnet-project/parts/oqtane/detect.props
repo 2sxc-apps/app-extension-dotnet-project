@@ -1,27 +1,41 @@
 <Project>
+  <!-- 1. Set defaults if not set from outside -->
+  <PropertyGroup>
+    <!-- Name of the DLL to check to verify Oqtane - could be set before to another value -->
+    <OqtaneMainDll Condition="'$(OqtaneMainDll)' == ''">Oqtane.Server.dll</OqtaneMainDll>
+    <OqtaneTargetFramework Condition="'$(OqtaneTargetFramework)' == ''">net10.0</OqtaneTargetFramework>
+  </PropertyGroup>
+
   <!-- Resolve the Oqtane marker paths for both standard and edition-based app layouts. -->
   <PropertyGroup>
-    <_OqtaneProdBinPathDefault>..\..\..\..\..\..</_OqtaneProdBinPathDefault>
-    <_OqtaneProdBinPathEditionDefault>..\..\..\..\..\..\..</_OqtaneProdBinPathEditionDefault>
-    <_OqtaneDevBinPathDefault>$(_OqtaneProdBinPathDefault)\bin\Debug\$(OqtaneTargetFramework)</_OqtaneDevBinPathDefault>
-    <_OqtaneDevBinPathEditionDefault>$(_OqtaneProdBinPathEditionDefault)\bin\Debug\$(OqtaneTargetFramework)</_OqtaneDevBinPathEditionDefault>
 
-    <OqtaneProdBinPath Condition="'$(OqtaneProdBinPath)' == '' And Exists('$(_OqtaneProdBinPathDefault)\$(OqtaneFile)')">$(_OqtaneProdBinPathDefault)</OqtaneProdBinPath>
-    <OqtaneProdBinPath Condition="'$(OqtaneProdBinPath)' == '' And Exists('$(_OqtaneProdBinPathEditionDefault)\$(OqtaneFile)')">$(_OqtaneProdBinPathEditionDefault)</OqtaneProdBinPath>
-    <OqtaneProdBinPath Condition="'$(OqtaneProdBinPath)' == '' And Exists('$(_OqtaneProdBinPathDefault)')">$(_OqtaneProdBinPathDefault)</OqtaneProdBinPath>
-    <OqtaneProdBinPath Condition="'$(OqtaneProdBinPath)' == '' And Exists('$(_OqtaneProdBinPathEditionDefault)')">$(_OqtaneProdBinPathEditionDefault)</OqtaneProdBinPath>
-    <OqtaneProdBinPath Condition="'$(OqtaneProdBinPath)' == ''">$(_OqtaneProdBinPathDefault)</OqtaneProdBinPath>
+    <!-- Path depths to check for the app -->
+    <_prodBinDefault>..\..\..\..\..\..</_prodBinDefault>
+    <_prodBinEditions>..\..\..\..\..\..\..</_prodBinEditions>
 
-    <OqtaneDevBinPath Condition="'$(OqtaneDevBinPath)' == '' And Exists('$(_OqtaneDevBinPathDefault)\$(OqtaneFile)')">$(_OqtaneDevBinPathDefault)</OqtaneDevBinPath>
-    <OqtaneDevBinPath Condition="'$(OqtaneDevBinPath)' == '' And Exists('$(_OqtaneDevBinPathEditionDefault)\$(OqtaneFile)')">$(_OqtaneDevBinPathEditionDefault)</OqtaneDevBinPath>
-    <OqtaneDevBinPath Condition="'$(OqtaneDevBinPath)' == '' And Exists('$(_OqtaneDevBinPathDefault)')">$(_OqtaneDevBinPathDefault)</OqtaneDevBinPath>
-    <OqtaneDevBinPath Condition="'$(OqtaneDevBinPath)' == '' And Exists('$(_OqtaneDevBinPathEditionDefault)')">$(_OqtaneDevBinPathEditionDefault)</OqtaneDevBinPath>
-    <OqtaneDevBinPath Condition="'$(OqtaneDevBinPath)' == ''">$(_OqtaneDevBinPathDefault)</OqtaneDevBinPath>
+    <_devBinPath>$(_prodBinDefault)\bin\Debug\$(OqtaneTargetFramework)</_devBinPath>
+    <_devBinPathEditions>$(_prodBinEditions)\bin\Debug\$(OqtaneTargetFramework)</_devBinPathEditions>
 
-    <_OqtaneProdMarkerPath>$(OqtaneProdBinPath)\$(OqtaneFile)</_OqtaneProdMarkerPath>
-    <_OqtaneDevMarkerPath>$(OqtaneDevBinPath)\$(OqtaneFile)</_OqtaneDevMarkerPath>
-    <_DetectedOqtaneProd Condition="Exists('$(_OqtaneProdMarkerPath)')">true</_DetectedOqtaneProd>
-    <_DetectedOqtaneDev Condition="Exists('$(_OqtaneDevMarkerPath)')">true</_DetectedOqtaneDev>
-    <_DetectedOqtane Condition="'$(_DetectedOqtaneProd)' == 'true' Or '$(_DetectedOqtaneDev)' == 'true'">true</_DetectedOqtane>
+    <OqtaneProdBinPath Condition="'$(OqtaneProdBinPath)' == '' And Exists('$(_prodBinDefault)\$(OqtaneMainDll)')">$(_prodBinDefault)</OqtaneProdBinPath>
+    <OqtaneProdBinPath Condition="'$(OqtaneProdBinPath)' == '' And Exists('$(_prodBinEditions)\$(OqtaneMainDll)')">$(_prodBinEditions)</OqtaneProdBinPath>
+    <OqtaneProdBinPath Condition="'$(OqtaneProdBinPath)' == '' And Exists('$(_prodBinDefault)')">$(_prodBinDefault)</OqtaneProdBinPath>
+    <OqtaneProdBinPath Condition="'$(OqtaneProdBinPath)' == '' And Exists('$(_prodBinEditions)')">$(_prodBinEditions)</OqtaneProdBinPath>
+    <OqtaneProdBinPath Condition="'$(OqtaneProdBinPath)' == ''">$(_prodBinDefault)</OqtaneProdBinPath>
+
+    <OqtaneDevBinPath Condition="'$(OqtaneDevBinPath)' == '' And Exists('$(_devBinPath)\$(OqtaneMainDll)')">$(_devBinPath)</OqtaneDevBinPath>
+    <OqtaneDevBinPath Condition="'$(OqtaneDevBinPath)' == '' And Exists('$(_devBinPathEditions)\$(OqtaneMainDll)')">$(_devBinPathEditions)</OqtaneDevBinPath>
+    <OqtaneDevBinPath Condition="'$(OqtaneDevBinPath)' == '' And Exists('$(_devBinPath)')">$(_devBinPath)</OqtaneDevBinPath>
+    <OqtaneDevBinPath Condition="'$(OqtaneDevBinPath)' == '' And Exists('$(_devBinPathEditions)')">$(_devBinPathEditions)</OqtaneDevBinPath>
+    <OqtaneDevBinPath Condition="'$(OqtaneDevBinPath)' == ''">$(_devBinPath)</OqtaneDevBinPath>
+
+    <_prodPath>$(OqtaneProdBinPath)\$(OqtaneMainDll)</_prodPath>
+    <_devPath>$(OqtaneDevBinPath)\$(OqtaneMainDll)</_devPath>
+
+    <!-- This will be used to vary certain things -->
+    <OqtaneIsProd Condition="Exists('$(_prodPath)')">true</OqtaneIsProd>
+    <OqtaneIsDev Condition="Exists('$(_devPath)')">true</OqtaneIsDev>
+
+    <!-- This will be used later on to determine if errors should show -->
+    <OqtaneDetected Condition="'$(OqtaneIsProd)' == 'true' Or '$(OqtaneIsDev)' == 'true'">true</OqtaneDetected>
   </PropertyGroup>
 </Project>

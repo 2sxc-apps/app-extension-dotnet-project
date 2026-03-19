@@ -11,14 +11,22 @@
 
   <!-- Host defaults, detection, and platform dispatch -->
   <Import Project="parts\defaults.props" />
-  <Import Project="parts\host-resolution.props" />
+  <Import Project="parts\detect-cms.props" />
+
+  <!-- If DNN, first set properties, then import DLLs -->
+  <Import Project="dnn\properties.props" Condition="'$(DnnIsRunning)' == 'true'" />
+  <Import Project="dnn\import-dlls.props" Condition="'$(DnnIsRunning)' == 'true'" />
+
+  <!-- If Oqtane, first set properties, then import DLLs -->
+  <Import Project="oqtane\properties.props" Condition="'$(OqtaneIsRunning)' == 'true'" />
+  <Import Project="oqtane\import-dlls.props" Condition="'$(OqtaneIsRunning)' == 'true'" />
 
   <!-- Shared references and file filtering -->
-  <Import Project="parts\common-references.props" />
+  <Import Project="parts\shared\import-dlls.props" />
   <Import Project="parts\ignore-editions.props" />
 
   <!-- Only enable the legacy helper-based Razor design-time pipeline for DNN.
        Oqtane runs on the Web SDK, which already wires up Razor source generators correctly. -->
-  <Import Project="parts\design-time\all.props" Condition="'$(DesignTimeBuild)' == 'true' And '$(RunningInDnn)' == 'true'" />
+  <Import Project="parts\design-time\all.props" Condition="'$(DesignTimeBuild)' == 'true' And '$(DnnIsRunning)' == 'true'" />
 
 </Project>

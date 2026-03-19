@@ -1,11 +1,4 @@
 <Project>
-  <!-- Apply DNN-specific framework, language, and references after host resolution selected DNN. -->
-  <PropertyGroup>
-    <TargetFramework>$(DnnTargetFramework)</TargetFramework>
-    <LangVersion>$(DnnLangVersion)</LangVersion>
-    <PathBin>$(DnnBinPath)</PathBin>
-  </PropertyGroup>
-
   <ItemGroup Condition="'$(PathBin)' != ''">
     <Reference Include="$(PathBin)\DotNetNuke.dll" Condition="Exists('$(PathBin)\DotNetNuke.dll')" />
     <Reference Include="$(PathBin)\DotNetNuke.*.dll" />
