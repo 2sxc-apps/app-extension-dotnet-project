@@ -12,6 +12,7 @@
     <IgnoredEditionCompileRemove Include="@(IgnoredEditionDir -> '%(Identity)\**\*.cs')" />
   </ItemGroup>
 
+  <!-- TODO: @STV pls explain what this section is for / what it does  -->
   <ItemGroup Condition="'$(IgnoredEditionDirsNormalized)' != ''">
     <None Remove="@(IgnoredEditionFileRemove)" />
     <Content Remove="@(IgnoredEditionFileRemove)" />
@@ -19,6 +20,7 @@
     <EmbeddedResource Remove="@(IgnoredEditionFileRemove)" />
   </ItemGroup>
 
+  <!-- TODO: @STV pls explain what this section is for / what it does  -->
   <Target Name="RemoveIgnoredEditionCompileItems" BeforeTargets="CoreCompile">
     <ItemGroup Condition="'$(IgnoredEditionDirsNormalized)' != ''">
       <None Remove="@(IgnoredEditionFileRemove)" />

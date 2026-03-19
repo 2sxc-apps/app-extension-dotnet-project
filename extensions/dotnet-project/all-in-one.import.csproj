@@ -3,12 +3,11 @@
   <!-- Managed by the 2sxc dotnet-project extension -->
   <!-- Composition root: keep this file small and compose the helper from parts/*.props -->
 
-  <!-- Base project shape -->
-  <Import Project="parts\namespace-and-output-type.import.props" />
+  <!-- Base project shape: Root Namespace "AppCode" and Output Type "Library" -->
+  <Import Project="parts\namespace-and-output-type.props" />
 
-  <!-- Always-on helper build settings -->
-  <Import Project="parts\constants.import.props" />
-  <Import Project="parts\warnings.import.props" />
+  <!-- C# DevKit build settings -->
+  <Import Project="parts\build\all.props" />
 
   <!-- Host defaults, detection, and platform dispatch -->
   <Import Project="parts\defaults.import.props" />
@@ -20,6 +19,6 @@
 
   <!-- Only enable the legacy helper-based Razor design-time pipeline for DNN.
        Oqtane runs on the Web SDK, which already wires up Razor source generators correctly. -->
-  <Import Project="parts\design-time.import.props" Condition="'$(DesignTimeBuild)' == 'true' And '$(RunningInDnn)' == 'true'" />
+  <Import Project="parts\design-time\all.props" Condition="'$(DesignTimeBuild)' == 'true' And '$(RunningInDnn)' == 'true'" />
 
 </Project>

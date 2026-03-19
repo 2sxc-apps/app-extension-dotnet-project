@@ -1,4 +1,16 @@
 <Project>
+<!-- TODO: @STV
+  - this does some very confusing logic-distribution
+  - some dnn-specific code is not here - so it's hard to follow what happens, but the rest is here again
+  - same for Oqtane
+  - and the split to first run some imports from the /dnn, then at the end some others is also hard to follow.
+  - my main issue is that there are some "temporary variables" which are set and used by other scripts
+    so there is some very tight coupling, but it's hard to figure out and it would not help to use parts of the scripts
+    if we do want to split things for better composition
+    then all these things should somehow be together in the same folder
+    and the file names should be in a way that the order is clear in the folder
+    this mix of calling single files, then calling group files (at the end) is very hard to follow
+-->
   <!-- Host-specific path resolution stays separate, but must run before host detection. -->
   <Import Project="dnn\path-resolve.props" />
   <Import Project="oqtane\path-resolve.props" />
@@ -10,14 +22,13 @@
   <PropertyGroup>
     <HelperHostModeNormalized>$(HelperHostMode.ToLowerInvariant())</HelperHostModeNormalized>
 
+    <!-- Explicit modes -->
     <RunningInDnn Condition="'$(HelperHostModeNormalized)' == 'dnn'">true</RunningInDnn>
     <RunningInOqtane Condition="'$(HelperHostModeNormalized)' == 'oqtane'">true</RunningInOqtane>
+
+    <!-- Detect the properties if the mode is "auto" -->
     <RunningInDnn Condition="'$(HelperHostModeNormalized)' == 'auto' And '$(DetectedDnn)' == 'true' And '$(DetectedOqtane)' != 'true'">true</RunningInDnn>
     <RunningInOqtane Condition="'$(HelperHostModeNormalized)' == 'auto' And '$(DetectedOqtane)' == 'true' And '$(DetectedDnn)' != 'true'">true</RunningInOqtane>
-
-    <OqtaneIsProd Condition="'$(RunningInOqtane)' == 'true' And '$(DetectedOqtaneProd)' == 'true'">true</OqtaneIsProd>
-    <OqtaneIsDev Condition="'$(RunningInOqtane)' == 'true' And '$(DetectedOqtaneDev)' == 'true'">true</OqtaneIsDev>
-    <OqtaneIsDev Condition="'$(RunningInOqtane)' == 'true' And '$(OqtaneIsProd)' != 'true' And '$(OqtaneIsDev)' != 'true'">true</OqtaneIsDev>
   </PropertyGroup>
 
   <Target Name="ValidateHelperHostResolution" BeforeTargets="PrepareForBuild">

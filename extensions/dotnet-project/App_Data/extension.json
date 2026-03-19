@@ -5,7 +5,7 @@
   "description": "\u003Cp\u003EContains various files to use with you .csproj file, to get proper intellisense in Visual Studio Code.\u0026nbsp;\u003C/p\u003E",
   "createdBy": "2sic",
   "copyright": "MIT 2026",
-  "linkMain": "",
+  "linkMain": "https://2sxc.org/en/apps/details/app/dotnet-project",
   "linkDocs": "https://go.2sxc.org/vscode",
   "linkSource": "https://github.com/2sxc-apps/app-extension-dotnet-project",
   "linkDemo": "",

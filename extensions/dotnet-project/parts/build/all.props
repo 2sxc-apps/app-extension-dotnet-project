@@ -1,0 +1,5 @@
+<Project>
+  <!-- C# DevKit build settings -->
+  <Import Project="build-constants.props" />
+  <Import Project="build-warnings.props" />
+</Project>

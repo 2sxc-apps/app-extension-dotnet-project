@@ -1,4 +1,11 @@
 <Project>
+
+  <PropertyGroup>
+    <OqtaneIsProd Condition="'$(RunningInOqtane)' == 'true' And '$(DetectedOqtaneProd)' == 'true'">true</OqtaneIsProd>
+    <OqtaneIsDev Condition="'$(RunningInOqtane)' == 'true' And '$(DetectedOqtaneDev)' == 'true'">true</OqtaneIsDev>
+    <OqtaneIsDev Condition="'$(RunningInOqtane)' == 'true' And '$(OqtaneIsProd)' != 'true' And '$(OqtaneIsDev)' != 'true'">true</OqtaneIsDev>
+  </PropertyGroup>
+
   <!-- Oqtane-specific framework, language, and bin selection -->
   <PropertyGroup>
     <TargetFramework>$(OqtaneTargetFramework)</TargetFramework>

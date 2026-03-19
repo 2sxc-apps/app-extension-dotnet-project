@@ -6,6 +6,7 @@
     <Reference Include="$(PathBin)\System.Text.Json.dll" Condition="Exists('$(PathBin)\System.Text.Json.dll')" />
   </ItemGroup>
 
+  <!-- References from the app specific Dependencies folder (incomplete feature) -->
   <ItemGroup>
     <Reference Include="Dependencies\*.dll" />
   </ItemGroup>

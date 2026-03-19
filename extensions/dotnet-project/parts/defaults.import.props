@@ -9,8 +9,21 @@
     <DnnFile Condition="'$(DnnFile)' == ''">DotNetNuke.dll</DnnFile>
     <OqtaneFile Condition="'$(OqtaneFile)' == ''">Oqtane.Server.dll</OqtaneFile>
 
+    <!-- TODO: @STV
+      - this is quite confusing - the TargetFramework seems to be set in various places
+      - pls try to find a way so it's all together, so it's clear what's happening
+    -->
+
+
     <!-- Keep TargetFramework valid before host resolution so validation can run -->
     <TargetFramework Condition="'$(TargetFramework)' == ''">$(DnnTargetFramework)</TargetFramework>
+
+    <!-- TODO: @STV
+      - this is quite confusing - the various BinPaths are set in various places
+      - pls try to find a way so it's all together, so it's clear what's happening
+      - my suggestion is that a single file does everything - and then only the BinPath is used everywhere else,
+        so it's clear that the resolution logic is all in one place and the rest of the project can just use the result of that logic without caring how it works
+    -->
 
     <!-- Default path candidates, ordered from app-root layout to edition-subfolder layout. -->
     <DnnBinPathDefault>..\..\..\..\bin</DnnBinPathDefault>
