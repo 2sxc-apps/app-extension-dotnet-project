@@ -7,11 +7,10 @@
   <Import Project="parts\shared\namespace-and-output-type.props" />
 
   <!-- C# DevKit build settings (constants and warnings) -->
-  <Import Project="parts\build\all.props" />
+  <Import Project="parts\shared\build.props" />
 
   <!-- Detect the CMS used - result is valid CmsType and PathBin -->
-
-  <Import Project="parts\environment\detect-cms.props" />
+  <Import Project="parts\shared\detect-cms.props" />
 
   <!-- If DNN, first set properties, then import DLLs -->
   <Import Project="parts\dnn\properties.props" Condition="'$(CmsType)' == 'dnn'" />
