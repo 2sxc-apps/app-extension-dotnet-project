@@ -198,10 +198,19 @@ flowchart TD
     ROOT --> EDIT[shared/ignore-editions.props]
     ROOT -->|DesignTimeBuild and CmsType dnn| DT[dnn-intellisense/all.props]
 
-    DT --> DTPATHS[dnn-intellisense/razor-tool-paths.props]
-    DT --> DTAN[dnn-intellisense/razor-analyzers.props]
-    DT --> DTTOOLS[dnn-intellisense/razor-tooling.props]
-    DT --> DTCSHTML[dnn-intellisense/include-cshtml.props]
+
+    subgraph DT_Group [Design Time Assets]
+        direction TB
+        DTPATHS[dnn-intellisense/razor-tool-paths.props]
+        DTAN[dnn-intellisense/razor-analyzers.props]
+        DTTOOLS[dnn-intellisense/razor-tooling.props]
+        DTCSHTML[dnn-intellisense/include-cshtml.props]
+
+        %% Hidden links to force vertical stacking
+        DTPATHS ~~~ DTAN ~~~ DTTOOLS ~~~ DTCSHTML
+    end
+
+    DT --> DT_Group
 ```
 
 ### 2. Host resolution and dispatch
