@@ -3,7 +3,7 @@
   <PropertyGroup>
     <_utilsFile>Microsoft.AspNetCore.Razor.Utilities.Shared.dll</_utilsFile>
     <_objPoolFile>Microsoft.Extensions.ObjectPool.dll</_objPoolFile>
-    
+
     <_utilsPath Condition="Exists('$(RazorSourceGeneratorsPath)\$(_utilsFile)')">$(RazorSourceGeneratorsPath)\$(_utilsFile)</_utilsPath>
     <_utilsPath Condition="'$(_utilsPath)' == '' And Exists('$(RazorToolsPath)\$(_utilsFile)')">$(RazorToolsPath)\$(_utilsFile)</_utilsPath>
     <_objPoolPath Condition="Exists('$(RazorSourceGeneratorsPath)\$(_objPoolFile)')">$(RazorSourceGeneratorsPath)\$(_objPoolFile)</_objPoolPath>
@@ -21,4 +21,5 @@
       <Private>false</Private>
     </Reference>
   </ItemGroup>
+
 </Project>

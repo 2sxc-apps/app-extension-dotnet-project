@@ -10,7 +10,7 @@
   <Import Project="parts\build\all.props" />
 
   <!-- Detect the CMS used - result is valid CmsType and PathBin -->
-  <Import Project="parts\defaults.props" /> <!-- TODO: THIS ONE FEELS USELESS, MUST CHECK -->
+
   <Import Project="parts\environment\detect-cms.props" />
 
   <!-- If DNN, first set properties, then import DLLs -->

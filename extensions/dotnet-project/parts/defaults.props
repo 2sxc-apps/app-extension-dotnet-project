@@ -1,8 +1,0 @@
-<Project>
-  <!-- User-overridable defaults for the IntelliSense helper -->
-  <PropertyGroup>
-    <!-- Keep TargetFramework valid before host resolution so validation can run -->
-    <!-- TODO: VERIFY THIS is useful, not sure if this makes any sense -->
-    <TargetFramework Condition="'$(TargetFramework)' == ''">net48</TargetFramework>
-  </PropertyGroup>
-</Project>
