@@ -13,8 +13,8 @@
     <_prodBinDefault>..\..\..\..\..\..</_prodBinDefault>
     <_prodBinEditions>..\..\..\..\..\..\..</_prodBinEditions>
 
-    <_devBinPath>$(_prodBinDefault)\bin\Debug\$(OqtaneTargetFramework)</_devBinPath>
-    <_devBinPathEditions>$(_prodBinEditions)\bin\Debug\$(OqtaneTargetFramework)</_devBinPathEditions>
+    <_devBinDefault>$(_prodBinDefault)\bin\Debug\$(OqtaneTargetFramework)</_devBinDefault>
+    <_devBinEditions>$(_prodBinEditions)\bin\Debug\$(OqtaneTargetFramework)</_devBinEditions>
 
     <OqtaneProdBinPath Condition="'$(OqtaneProdBinPath)' == '' And Exists('$(_prodBinDefault)\$(OqtaneMainDll)')">$(_prodBinDefault)</OqtaneProdBinPath>
     <OqtaneProdBinPath Condition="'$(OqtaneProdBinPath)' == '' And Exists('$(_prodBinEditions)\$(OqtaneMainDll)')">$(_prodBinEditions)</OqtaneProdBinPath>
@@ -22,11 +22,11 @@
     <OqtaneProdBinPath Condition="'$(OqtaneProdBinPath)' == '' And Exists('$(_prodBinEditions)')">$(_prodBinEditions)</OqtaneProdBinPath>
     <OqtaneProdBinPath Condition="'$(OqtaneProdBinPath)' == ''">$(_prodBinDefault)</OqtaneProdBinPath>
 
-    <OqtaneDevBinPath Condition="'$(OqtaneDevBinPath)' == '' And Exists('$(_devBinPath)\$(OqtaneMainDll)')">$(_devBinPath)</OqtaneDevBinPath>
-    <OqtaneDevBinPath Condition="'$(OqtaneDevBinPath)' == '' And Exists('$(_devBinPathEditions)\$(OqtaneMainDll)')">$(_devBinPathEditions)</OqtaneDevBinPath>
-    <OqtaneDevBinPath Condition="'$(OqtaneDevBinPath)' == '' And Exists('$(_devBinPath)')">$(_devBinPath)</OqtaneDevBinPath>
-    <OqtaneDevBinPath Condition="'$(OqtaneDevBinPath)' == '' And Exists('$(_devBinPathEditions)')">$(_devBinPathEditions)</OqtaneDevBinPath>
-    <OqtaneDevBinPath Condition="'$(OqtaneDevBinPath)' == ''">$(_devBinPath)</OqtaneDevBinPath>
+    <OqtaneDevBinPath Condition="'$(OqtaneDevBinPath)' == '' And Exists('$(_devBinDefault)\$(OqtaneMainDll)')">$(_devBinDefault)</OqtaneDevBinPath>
+    <OqtaneDevBinPath Condition="'$(OqtaneDevBinPath)' == '' And Exists('$(_devBinEditions)\$(OqtaneMainDll)')">$(_devBinEditions)</OqtaneDevBinPath>
+    <OqtaneDevBinPath Condition="'$(OqtaneDevBinPath)' == '' And Exists('$(_devBinDefault)')">$(_devBinDefault)</OqtaneDevBinPath>
+    <OqtaneDevBinPath Condition="'$(OqtaneDevBinPath)' == '' And Exists('$(_devBinEditions)')">$(_devBinEditions)</OqtaneDevBinPath>
+    <OqtaneDevBinPath Condition="'$(OqtaneDevBinPath)' == ''">$(_devBinDefault)</OqtaneDevBinPath>
 
     <_prodPath>$(OqtaneProdBinPath)\$(OqtaneMainDll)</_prodPath>
     <_devPath>$(OqtaneDevBinPath)\$(OqtaneMainDll)</_devPath>

@@ -194,31 +194,31 @@ flowchart TB
         common["common"]
         dnnDevKit["dnnDevKit"]
   end
- subgraph prep["Step 1: Shared Preparation Steps <code>/1-prep/</code>"]
+ subgraph prep["Step 1: Preparation <code>/1-prep/</code>"]
     direction LR
         prepNs["namespace-and-output-type.props"] -->
         prepBuild["constants-and-warnings.props"]
   end
- subgraph cmsDetect["Step 2: Detect CMS <code>/2-detect/</code>"]
+ subgraph cmsDetect["Step 2: Prepare Paths and Detect CMS <code>/2-detect/</code>"]
     direction LR
         prepCMS["detect-cms.props"]
   end
- subgraph dnn["Step 3.1: DNN Steps  <code>/dnn/</code>"]
+ subgraph dnn["Step 3: Setup DNN <code>/3-setup/dnn/</code>"]
     direction LR
-        dnnDlls["dnn/import-dlls.props"]
-        dnnProps["dnn/properties.props"]
+        dnnDlls["import-dlls.props"]
+        dnnProps["properties.props"]
   end
- subgraph oqtane["Step 3.2: Oqtane Steps <code>/oqtane/</code>"]
+ subgraph oqtane["Step 3: Setup Oqtane <code>/3-setup/oqtane/</code>"]
     direction LR
-        oqtDlls["oqtane/import-dlls.props"]
-        oqtProps["oqtane/properties.props"]
+        oqtDlls["import-dlls.props"]
+        oqtProps["properties.props"]
   end
- subgraph common["Step 4: Shared Final Steps <code>/4-final/</code>"]
+ subgraph common["Step 8: Final Steps <code>/8-final/</code>"]
     direction LR
         commonEditions["ignore-editions.props"]
         commonDlls["import-dlls.props"]
   end
- subgraph dnnDevKit["Step 5: DNN C# DevKit Helpers <code>/dnn/devkit/all.props</code>"]
+ subgraph dnnDevKit["Step 9: DNN C# DevKit Helpers <code>/9-devkit/dnn/all.props</code>"]
     direction LR
         DTPATHS["razor-tool-paths.props"]
         DTAN["razor-analyzers.props"]
@@ -243,6 +243,9 @@ flowchart TB
      dnnDevKit:::noWrap
      allInOne:::noWrap
      prep:::noWrap
+     cmsDetect:::noWrap
+     dnn:::noWrap
+     oqtane:::noWrap
     classDef noWrap white-space:nowrap
 ```
 

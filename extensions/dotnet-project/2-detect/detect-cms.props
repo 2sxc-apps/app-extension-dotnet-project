@@ -9,8 +9,8 @@
   </PropertyGroup>
 
   <!-- 2. Resolve platform paths first and detect which one applies. -->
-  <Import Project="..\dnn\detect-and-paths.props" />
-  <Import Project="..\oqtane\detect-and-paths.props" />
+  <Import Project=".\dnn\paths-and-detect.props" />
+  <Import Project=".\oqtane\paths-and-detect.props" />
 
   <!-- 3. Figure out the final CmsType, if it is still auto -->
   <PropertyGroup Condition="'$(CmsType)' == 'auto'">
