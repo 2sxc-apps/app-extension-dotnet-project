@@ -4,7 +4,8 @@ This is the app to develop the extension `dotnet-project`.
 
 It exists to make app-level `app.csproj` files much easier to set up for IntelliSense and related editor support in VS Code.
 
-Find out more on <https://github.com/2sxc-apps/app-extension-dotnet-project>
+* Check out the extensions docs on <https://go.2sxc.org/ext-csproj>
+* Find out more on <https://github.com/2sxc-apps/app-extension-dotnet-project>
 
 ## Release Note
 
@@ -183,10 +184,16 @@ What the script does:
 
 ### 1. Import flow
 
+<!-- Note: on line "direction TB" it should be "direction TD" but there's a bug in Mermaid 11.12 (docfx) which fails
+  there is a fix, but we must wait till docfx uses mermaid 11.13+ to update - see
+  - https://github.com/mermaid-js/mermaid/releases
+  - https://github.com/mermaid-js/mermaid/pull/6989/changes
+-->
+
 ```mermaid
 flowchart TB
  subgraph allInOne["<code>extensions/dotnet-project/all-in-one.import.csproj</code>"]
-    direction TD
+    direction TB
         prep["prep"]
         cmsDetect["cmsDetect"]
         dnn["dnn"]
