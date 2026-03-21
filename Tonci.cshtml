@@ -1,0 +1,23 @@
+@inherits AppCode.Razor.AppRazor
+@using ToSic.Razor.Blade
+@using AppCode.Data
+@{
+  // Get current post to show from the View-Query + some Helpers
+  var blogPost = As<BlogPost>(MyData);
+}
+<div @Kit.Toolbar.Default(MyItem)>
+
+  <h1>App to develop the app.csproj</h1>
+
+  <h2>@blogPost.Title</h2>
+
+  <div class="alert alert-secondary">
+    TODO: DOCS
+  </div>
+
+  <hr>
+
+  <p>
+    @blogPost.Summary
+  </p>
+</div>
