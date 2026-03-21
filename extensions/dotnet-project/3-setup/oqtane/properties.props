@@ -9,9 +9,5 @@
   <PropertyGroup>
     <TargetFramework>$(OqtaneTargetFramework)</TargetFramework>
     <LangVersion>$(OqtaneLangVersion)</LangVersion>
-
-    <!-- Set PathBin - fallback to dev if not prod -->
-    <PathBin Condition="'$(OqtaneIsProd)' == 'true'">$(OqtaneProdBinPath)</PathBin>
-    <PathBin Condition="'$(PathBin)' == ''">$(OqtaneDevBinPath)</PathBin>
   </PropertyGroup>
 </Project>

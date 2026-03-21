@@ -24,4 +24,14 @@
     <Error Condition="'$(DnnDetected)' == 'true' And '$(OqtaneDetected)' == 'true'" Text="Auto-detection is ambiguous: both DNN and Oqtane markers were found. Set CmsType to dnn or oqtane, or adjust DnnBinPath|OqtaneProdBinPath|OqtaneDevBinPath." />
   </Target>
 
+  <!-- 5. Set PathBin as CmsType is now either 'dnn' or 'oqtane' -->
+  <PropertyGroup Condition="'$(CmsType)' == 'dnn'">
+    <PathBin >$(DnnBinPath)</PathBin>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(CmsType)' == 'oqtane'">
+    <!-- Set PathBin - fallback to dev if not prod -->
+    <PathBin Condition="'$(OqtaneIsProd)' == 'true'">$(OqtaneProdBinPath)</PathBin>
+    <PathBin Condition="'$(PathBin)' == ''">$(OqtaneDevBinPath)</PathBin>
+  </PropertyGroup>
 </Project>

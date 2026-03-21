@@ -9,6 +9,5 @@
   <PropertyGroup>
     <TargetFramework>$(DnnTargetFramework)</TargetFramework>
     <LangVersion>$(DnnLangVersion)</LangVersion>
-    <PathBin>$(DnnBinPath)</PathBin>
   </PropertyGroup>
 </Project>

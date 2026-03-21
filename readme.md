@@ -249,28 +249,48 @@ flowchart TB
     classDef noWrap white-space:nowrap
 ```
 
-### 2. Host resolution and dispatch
+### 2. Paths and CMS Detection
+
+This is the flow of code:
+
+1. Set `CmsType=auto` if not previously set.
+1. Normalize to lowercase - so it should only be `auto`, `dnn`, or `oqtane` at this point.
+1. Run the platform-specific detection logic, which looks for the marker DLL in the expected paths for each platform, and sets `DnnDetected` or `OqtaneDetected` accordingly.
+1. If `CmsType` is still `auto`, switch it to `dnn` or `oqtane` if only one of them was detected.
+1. If `CmsType` is not `dnn` or `oqtane`, throw an error because the host cannot be resolved.
+
+As an output, it will have a final:
+
+1. `CmsType` value of either `dnn` or `oqtane` that can be used for conditional imports and properties later on.
+1. `PathBin` value pointing to the correct `bin` folder of the host, which is needed for reference imports later on.
 
 ```mermaid
 flowchart TD
-    CMS[shared/detect-cms.props] --> MODE{CmsType}
-    CMS --> DNNDET[dnn/detect.props]
-    CMS --> OQTDET[oqtane/detect.props]
+    A[Start] --> B{Is CmsType set?}
+    B -- No --> C[Set CmsType=auto]
+    B -- Yes --> D[Normalize CmsType to lowercase]
 
-    MODE -->|dnn| DNN[DNN branch]
-    MODE -->|oqtane| OQT[Oqtane branch]
-    MODE -->|auto| AUTO{Detected hosts}
+    D --> E[Run DNN detection logic]
+    D --> F[Run Oqtane detection logic]
 
-    DNNDET --> AUTO
-    OQTDET --> AUTO
+    E --> G{Is DNN detected?}
+    F --> H{Is Oqtane detected?}
 
-    AUTO -->|only DNN| SETDNN[set CmsType dnn]
-    AUTO -->|only Oqtane| SETOQT[set CmsType oqtane]
-    AUTO -->|both| E1[error ambiguous host]
-    AUTO -->|none| E2[error invalid unresolved CmsType]
+    G -- Yes --> I[DnnDetected=true]
+    H -- Yes --> J[OqtaneDetected=true]
 
-    SETDNN --> DNN
-    SETOQT --> OQT
+    I --> K{Is CmsType still auto?}
+    J --> K
+
+    K -- Yes and DNN only --> L[Set CmsType=dnn]
+    K -- Yes and Oqtane only --> M[Set CmsType=oqtane]
+    K -- No or Both detected --> N[Error: Ambiguous or invalid CmsType]
+
+    L --> O[Set PathBin to DnnBinPath]
+    M --> P[Set PathBin to OqtaneProdBinPath, fallback to OqtaneDevBinPath]
+
+    O --> Q[End with CmsType=dnn and PathBin set]
+    P --> R[End with CmsType=oqtane and PathBin set]
 ```
 
 ### 3. Platform and tooling branches
