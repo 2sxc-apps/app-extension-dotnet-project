@@ -185,50 +185,53 @@ What the script does:
 
 ```mermaid
 flowchart TB
- subgraph allInOne["extensions/dotnet-project/all-in-one.import.csproj"]
+ subgraph allInOne["<code>extensions/dotnet-project/all-in-one.import.csproj</code>"]
     direction TD
         prep["prep"]
+        cmsDetect["cmsDetect"]
         dnn["dnn"]
         oqtane["oqtane"]
         common["common"]
         dnnDevKit["dnnDevKit"]
   end
- subgraph prep["Shared Preparation Steps"]
+ subgraph prep["Step 1: Shared Preparation Steps <code>/1-prep/</code>"]
     direction LR
-        prepCMS["shared/detect-cms.props"]
-        prepBuild["shared/build.props"]
-        prepNs["shared/namespace-and-output-type.props"]
+        prepNs["namespace-and-output-type.props"] -->
+        prepBuild["constants-and-warnings.props"]
   end
- subgraph dnn["DNN Steps"]
+ subgraph cmsDetect["Step 2: Detect CMS <code>/2-detect/</code>"]
+    direction LR
+        prepCMS["detect-cms.props"]
+  end
+ subgraph dnn["Step 3.1: DNN Steps  <code>/dnn/</code>"]
     direction LR
         dnnDlls["dnn/import-dlls.props"]
         dnnProps["dnn/properties.props"]
   end
- subgraph oqtane["Oqtane Steps"]
+ subgraph oqtane["Step 3.2: Oqtane Steps <code>/oqtane/</code>"]
     direction LR
         oqtDlls["oqtane/import-dlls.props"]
         oqtProps["oqtane/properties.props"]
   end
- subgraph common["Shared Final Steps"]
+ subgraph common["Step 4: Shared Final Steps <code>/4-final/</code>"]
     direction LR
-        commonEditions["shared/ignore-editions.props"]
-        commonDlls["shared/import-dlls.props"]
+        commonEditions["ignore-editions.props"]
+        commonDlls["import-dlls.props"]
   end
- subgraph dnnDevKit["DNN C# DevKit Helpers (dnn-devkit/all.props)"]
+ subgraph dnnDevKit["Step 5: DNN C# DevKit Helpers <code>/dnn/devkit/all.props</code>"]
     direction LR
-        DTPATHS["dnn-devkit/razor-tool-paths.props"]
-        DTAN["dnn-devkit/razor-analyzers.props"]
-        DTTOOLS["dnn-devkit/razor-tooling.props"]
-        DTCSHTML["dnn-devkit/include-cshtml.props"]
+        DTPATHS["razor-tool-paths.props"]
+        DTAN["razor-analyzers.props"]
+        DTTOOLS["razor-tooling.props"]
+        DTCSHTML["include-cshtml.props"]
   end
     dnnProps --> dnnDlls
     oqtProps --> oqtDlls
     commonDlls --> commonEditions
-    prepNs --> prepBuild
-    prepBuild --> prepCMS
     APP["app.csproj<br>(your file)"] --> allInOne
-    prep -- "CmsType == oqtane" --> oqtane
-    prep -- "CmsType == dnn" --> dnn
+    prep --> cmsDetect
+    cmsDetect -- "CmsType == oqtane" --> oqtane
+    cmsDetect -- "CmsType == dnn" --> dnn
     dnn --> common
     oqtane --> common
     common -- "if DesignTimeBuild and CmsType == dnn" --> dnnDevKit
@@ -239,6 +242,7 @@ flowchart TB
     prepCMS@{ shape: subproc}
      dnnDevKit:::noWrap
      allInOne:::noWrap
+     prep:::noWrap
     classDef noWrap white-space:nowrap
 ```
 

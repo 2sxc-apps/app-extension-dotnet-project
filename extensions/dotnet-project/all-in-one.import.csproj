@@ -3,29 +3,29 @@
   <!-- Managed by the 2sxc dotnet-project extension -->
   <!-- Composition root: keep this file small and compose the helper from parts/*.props -->
 
-  <!-- Base project shape: Root Namespace "AppCode" and Output Type "Library" -->
-  <Import Project="parts\shared\namespace-and-output-type.props" />
+  <!-- Step 4 1.1: Base project shape: Root Namespace "AppCode" and Output Type "Library" -->
+  <Import Project="1-prep\namespace-and-output-type.props" />
 
-  <!-- C# DevKit build settings (constants and warnings) -->
-  <Import Project="parts\shared\build.props" />
+  <!-- Step 4 1.2: C# DevKit build settings (constants and warnings) -->
+  <Import Project="1-prep\constants-and-warnings.props" />
 
-  <!-- Detect the CMS used - result is valid CmsType and PathBin -->
-  <Import Project="parts\shared\detect-cms.props" />
+  <!-- Step 4 2: Detect the CMS used - result is valid CmsType and PathBin -->
+  <Import Project="2-detect\detect-cms.props" />
 
-  <!-- If DNN, first set properties, then import DLLs -->
-  <Import Project="parts\dnn\properties.props" Condition="'$(CmsType)' == 'dnn'" />
-  <Import Project="parts\dnn\import-dlls.props" Condition="'$(CmsType)' == 'dnn'" />
+  <!-- Step 4 3.1: If DNN, first set properties, then import DLLs -->
+  <Import Project=".\dnn\properties.props" Condition="'$(CmsType)' == 'dnn'" />
+  <Import Project=".\dnn\import-dlls.props" Condition="'$(CmsType)' == 'dnn'" />
 
-  <!-- If Oqtane, first set properties, then import DLLs -->
-  <Import Project="parts\oqtane\properties.props" Condition="'$(CmsType)' == 'oqtane'" />
-  <Import Project="parts\oqtane\import-dlls.props" Condition="'$(CmsType)' == 'oqtane'" />
+  <!-- Step 4 3.2: If Oqtane, first set properties, then import DLLs -->
+  <Import Project=".\oqtane\properties.props" Condition="'$(CmsType)' == 'oqtane'" />
+  <Import Project=".\oqtane\import-dlls.props" Condition="'$(CmsType)' == 'oqtane'" />
 
-  <!-- Shared references and file filtering -->
-  <Import Project="parts\shared\import-dlls.props" />
-  <Import Project="parts\shared\ignore-editions.props" />
+  <!-- Step 4 4: Shared references and file filtering -->
+  <Import Project=".\4-final\import-dlls.props" />
+  <Import Project=".\4-final\ignore-editions.props" />
 
-  <!-- DNN only: enable the legacy helper-based Razor design-time pipeline for DNN.
+  <!-- Step 4 5: DNN only: enable the legacy helper-based Razor design-time pipeline for DNN.
        Oqtane runs on the Web SDK, which already wires up Razor source generators correctly. -->
-  <Import Project="parts\dnn-devkit\all.props" Condition="'$(DesignTimeBuild)' == 'true' And '$(CmsType)' == 'dnn'" />
+  <Import Project=".\dnn\devkit\all.props" Condition="'$(DesignTimeBuild)' == 'true' And '$(CmsType)' == 'dnn'" />
 
 </Project>
