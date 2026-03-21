@@ -1,5 +1,7 @@
 # App Extension: Dotnet Project
 
+<img src="app-icon.png" width="250px" align="right">
+
 This is the app to develop the extension `dotnet-project`.
 
 It exists to make app-level `app.csproj` files much easier to set up for IntelliSense and related editor support in VS Code.
