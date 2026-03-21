@@ -184,33 +184,62 @@ What the script does:
 ### 1. Import flow
 
 ```mermaid
-flowchart TD
-    APP[app.csproj] --> ROOT[all-in-one.import.csproj]
+flowchart TB
+ subgraph allInOne["extensions/dotnet-project/all-in-one.import.csproj"]
+    direction TD
+        prep["prep"]
+        dnn["dnn"]
+        oqtane["oqtane"]
+        common["common"]
+        dnnDevKit["dnnDevKit"]
+  end
+ subgraph prep["Shared Preparation Steps"]
+    direction LR
+        prepCMS["shared/detect-cms.props"]
+        prepBuild["shared/build.props"]
+        prepNs["shared/namespace-and-output-type.props"]
+  end
+ subgraph dnn["DNN Steps"]
+    direction LR
+        dnnDlls["dnn/import-dlls.props"]
+        dnnProps["dnn/properties.props"]
+  end
+ subgraph oqtane["Oqtane Steps"]
+    direction LR
+        oqtDlls["oqtane/import-dlls.props"]
+        oqtProps["oqtane/properties.props"]
+  end
+ subgraph common["Shared Final Steps"]
+    direction LR
+        commonEditions["shared/ignore-editions.props"]
+        commonDlls["shared/import-dlls.props"]
+  end
+ subgraph dnnDevKit["DNN C# DevKit Helpers (dnn-devkit/all.props)"]
+    direction LR
+        DTPATHS["dnn-devkit/razor-tool-paths.props"]
+        DTAN["dnn-devkit/razor-analyzers.props"]
+        DTTOOLS["dnn-devkit/razor-tooling.props"]
+        DTCSHTML["dnn-devkit/include-cshtml.props"]
+  end
+    dnnProps --> dnnDlls
+    oqtProps --> oqtDlls
+    commonDlls --> commonEditions
+    prepNs --> prepBuild
+    prepBuild --> prepCMS
+    APP["app.csproj<br>(your file)"] --> allInOne
+    prep -- "CmsType == oqtane" --> oqtane
+    prep -- "CmsType == dnn" --> dnn
+    dnn --> common
+    oqtane --> common
+    common -- "if DesignTimeBuild and CmsType == dnn" --> dnnDevKit
+    DTPATHS --> DTAN
+    DTAN --> DTTOOLS
+    DTTOOLS --> DTCSHTML
 
-    ROOT --> NS[shared/namespace-and-output-type.props]
-    ROOT --> BUILD[shared/build.props]
-    ROOT --> CMS[shared/detect-cms.props]
-    ROOT -->|if CmsType dnn| DNNPROPS[dnn/properties.props]
-    ROOT -->|if CmsType dnn| DNNDLLS[dnn/import-dlls.props]
-    ROOT -->|if CmsType oqtane| OQTPROPS[oqtane/properties.props]
-    ROOT -->|if CmsType oqtane| OQTDLLS[oqtane/import-dlls.props]
-    ROOT --> COMMON[shared/import-dlls.props]
-    ROOT --> EDIT[shared/ignore-editions.props]
-    ROOT -->|DesignTimeBuild and CmsType dnn| DT[dnn-intellisense/all.props]
-
-
-    subgraph DT_Group [Design Time Assets]
-        direction TB
-        DTPATHS[dnn-intellisense/razor-tool-paths.props]
-        DTAN[dnn-intellisense/razor-analyzers.props]
-        DTTOOLS[dnn-intellisense/razor-tooling.props]
-        DTCSHTML[dnn-intellisense/include-cshtml.props]
-
-        %% Hidden links to force vertical stacking
-        DTPATHS ~~~ DTAN ~~~ DTTOOLS ~~~ DTCSHTML
-    end
-
-    DT --> DT_Group
+    prepCMS@{ shape: subproc}
+     dnnDevKit:::noWrap
+     allInOne:::noWrap
+    classDef noWrap white-space:nowrap
 ```
 
 ### 2. Host resolution and dispatch
