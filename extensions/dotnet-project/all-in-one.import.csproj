@@ -26,6 +26,6 @@
 
   <!-- DNN only: enable the legacy helper-based Razor design-time pipeline for DNN.
        Oqtane runs on the Web SDK, which already wires up Razor source generators correctly. -->
-  <Import Project="parts\dnn-intellisense\all.props" Condition="'$(DesignTimeBuild)' == 'true' And '$(CmsType)' == 'dnn'" />
+  <Import Project="parts\dnn-devkit\all.props" Condition="'$(DesignTimeBuild)' == 'true' And '$(CmsType)' == 'dnn'" />
 
 </Project>
